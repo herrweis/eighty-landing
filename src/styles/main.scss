@@ -3,9 +3,11 @@
 
 // ═══════════════════════════════════════════════════════════════════════
 //  eighty° — pre-launch landing page
-//  This stylesheet is the STATIC baseline: with no JS (or with
-//  prefers-reduced-motion) the three acts simply stack top-to-bottom and
-//  read in full. main.js layers the scroll choreography on top.
+//  Native scroll only — no smooth-scroll, no pinning, no scroll-scrubbing.
+//  This stylesheet is the STATIC baseline; with no JS (or reduced motion)
+//  the three acts stack and read in full. The motion layer at the bottom is
+//  purely additive (a one-time line-draw + fade-ups) and only runs when JS
+//  adds `.is-animated`.
 // ═══════════════════════════════════════════════════════════════════════
 
 body {
@@ -28,17 +30,16 @@ body {
   font-family: $font-mono;
 }
 
-// ─── Acts share full-height framing ─────────────────────────────────────
 .act {
   position: relative;
   width: 100%;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
 }
 
 // ─── Act 1 — hero ───────────────────────────────────────────────────────
 .act--hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -50,7 +51,6 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   padding: clamp(16px, 3vw, 45px) $page-pad;
-  z-index: 10;
 
   .label {
     text-transform: uppercase;
@@ -78,9 +78,9 @@ body {
 
 .hero__cue {
   position: absolute;
-  left: 50%;
+  left: 0;
+  right: 0;
   bottom: clamp(28px, 6vh, 58px);
-  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -93,35 +93,36 @@ body {
 }
 
 // ─── Act 2 — the 80° + blurb ────────────────────────────────────────────
+// The 80° sits in place (sticky) and the blurb scrolls past it.
 .act--figure {
-  justify-content: center;
-  padding: clamp(48px, 9vh, 120px) 0;
+  padding-bottom: clamp(32px, 8vh, 110px);
 }
 
-.figure-inner {
-  position: relative;
-  width: min(92vw, 1280px);
-  margin: 0 auto;
+.figure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100svh;
 }
 
 .figure__mark {
-  width: 100%;
+  width: min(86vw, 1100px);
+  max-height: 78svh;
   height: auto;
   overflow: visible;
 
   .stroke {
     fill: none;
     stroke: $cedar;
-    // Stroke is 5px in the 1512-unit viewBox; it scales with the art so the
-    // line weight stays proportional at every size, matching both frames.
+    // 5px in the 1512-unit viewBox; scales with the art, matching both frames
     stroke-width: 5;
   }
 }
 
 .blurb {
   font-family: $font-display;
-  font-weight: 300;
-  font-size: clamp(14px, 1.05vw, 16px);
+  font-weight: 400;
+  font-size: clamp(15px, 1.05vw, 17px);
   line-height: 1.5;
   color: $cedar;
 
@@ -131,12 +132,16 @@ body {
 }
 
 @include desktop {
-  // Blurb sits in the bottom-right notch of the figure (Figma: x1080/y601)
+  .figure {
+    position: sticky;
+    top: 0;
+  }
+
+  // Blurb rises into the lower-right and scrolls past the standing 80°
   .blurb {
-    position: absolute;
-    left: 70%;
-    top: 60%;
-    width: 27%;
+    width: min(30%, 360px);
+    margin-left: auto;
+    margin-right: 8vw;
   }
 }
 
@@ -145,31 +150,38 @@ body {
     overflow-x: clip;
   }
 
-  // The 80° bleeds past both screen edges, exactly as drawn on the iPhone frame
+  // The 80° bleeds past both screen edges, as drawn on the iPhone frame.
+  // Block (not flex) so the oversized SVG isn't shrunk to fit.
   .figure {
+    display: block;
+    height: auto;
+    padding-top: clamp(40px, 12vh, 110px);
+  }
+  .figure__mark {
     width: 150vw;
+    max-height: none;
     margin-left: 50%;
     transform: translateX(-50%);
   }
 
   .blurb {
     width: min(92vw, 360px);
-    margin: clamp(36px, 8vh, 72px) auto 0;
+    margin: clamp(40px, 9vh, 80px) auto 0;
     padding: 0 $page-pad;
   }
 }
 
 // ─── Act 3 — keep me in the loop ────────────────────────────────────────
 .act--signup {
-  justify-content: center;
-  // At least half a viewport of breathing room above the form
-  padding-top: 60svh;
-  padding-bottom: clamp(40px, 8vh, 96px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: clamp(72px, 13vh, 170px);
+  padding-bottom: clamp(40px, 7vh, 90px);
 }
 
 .signup-inner {
-  width: min(92vw, 709px);
-  margin: 0 auto;
+  width: min(92vw, 720px);
 }
 
 .stamp {
@@ -184,21 +196,17 @@ body {
   display: flex;
   align-items: center;
   gap: 0.2em;
-  padding: clamp(6px, 0.75vw, 9px) clamp(10px, 1vw, 14px);
-  border: 1.6px solid $cedar;
+  padding: clamp(7px, 0.85vw, 11px) clamp(11px, 1.1vw, 16px);
+  border: 2px solid $cedar;
   font-family: $font-mono;
   font-weight: 400;
-  font-size: clamp(20px, 3.4vw, 38px);
-  letter-spacing: 0.1em;
+  font-size: clamp(21px, 3.5vw, 40px);
+  letter-spacing: 0.08em;
   line-height: 1.15;
 
   & + & {
-    margin-top: -1.6px; // collapse shared borders
+    margin-top: -2px; // collapse shared borders
   }
-}
-
-.stamp__head {
-  font-weight: 400;
 }
 
 .stamp__label {
@@ -216,7 +224,7 @@ body {
   padding: 0;
 
   &::placeholder {
-    color: rgba($cedar, 0.3);
+    color: rgba($cedar, 0.32);
   }
 }
 
@@ -233,12 +241,12 @@ body {
 // Success state replaces the form
 .signup-done {
   font-family: $font-mono;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   line-height: 1.4;
-  border: 1.6px solid $cedar;
-  padding: clamp(18px, 2.4vw, 30px) clamp(16px, 2vw, 26px);
+  border: 2px solid $cedar;
+  padding: clamp(20px, 2.6vw, 34px) clamp(18px, 2.2vw, 30px);
   transform: rotate(-1.5deg);
-  font-size: clamp(20px, 3.2vw, 36px);
+  font-size: clamp(21px, 3.4vw, 38px);
 
   span {
     display: block;
@@ -261,14 +269,6 @@ body {
   }
 }
 
-.privacy {
-  margin-top: 18px;
-  font-family: $font-mono;
-  font-size: clamp(11px, 0.85vw, 12px);
-  letter-spacing: 0.08em;
-  color: rgba($cedar, 0.55);
-}
-
 // ─── Footer ─────────────────────────────────────────────────────────────
 .footer {
   display: flex;
@@ -279,12 +279,12 @@ body {
 }
 
 .footer__email {
-  font-size: clamp(11px, 0.9vw, 14px);
+  font-size: clamp(12px, 0.95vw, 15px);
   letter-spacing: 0.12em;
 }
 
 .footer__mark {
-  width: 110px;
+  width: 116px;
   height: auto;
 }
 
@@ -315,24 +315,63 @@ body {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-//  Motion layer — only active when JS adds `.is-animated` to <html>
-//  (i.e. JS ran AND prefers-reduced-motion is not set). Everything above
-//  is the fully-readable resting state.
+//  Motion layer — additive, native-scroll only. Active only when JS adds
+//  `.is-animated` (i.e. JS ran AND prefers-reduced-motion is not set).
 // ═══════════════════════════════════════════════════════════════════════
 .is-animated {
-  // Hide strokes until the scrubbed draw reveals them
+  // Hero settles in on load (entrance only — not tied to scroll)
+  .hero__center {
+    opacity: 0;
+    animation: rise-in 1s 0.15s ease forwards;
+  }
+  .hero__cue {
+    opacity: 0;
+    animation: rise-in 1s 0.5s ease forwards;
+  }
+  .topbar .label {
+    opacity: 0;
+    animation: fade-in 1.1s 0.1s ease forwards;
+  }
+
+  // 80° line-draws once when it enters view, then stays drawn
   .figure__mark .stroke {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
   }
-
-  // Blurb starts just below its resting spot
-  .blurb {
-    opacity: 0;
+  .figure.is-drawn .stroke {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1.05s cubic-bezier(0.6, 0.01, 0.2, 1);
   }
+  .figure.is-drawn .stroke[data-draw='0'] { transition-delay: 0s; }
+  .figure.is-drawn .stroke[data-draw='1'] { transition-delay: 0.3s; }
+  .figure.is-drawn .stroke[data-draw='2'] { transition-delay: 0.6s; }
+  .figure.is-drawn .stroke[data-draw='3'] { transition-delay: 0.9s; }
 
-  // Form/footer reveal target
-  .signup-inner {
+  // Sections fade up as they arrive
+  [data-reveal] {
     opacity: 0;
+    transform: translateY(26px);
+  }
+  [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  to {
+    opacity: 1;
   }
 }

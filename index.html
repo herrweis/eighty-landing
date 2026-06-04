@@ -50,59 +50,57 @@
     <main>
       <!-- Act 1 — hero -->
       <section class="act act--hero" aria-labelledby="brand">
-        <!-- pinned top row -->
-        <header class="topbar" data-topbar>
+        <header class="topbar">
           <span class="label">Find your ritual</span>
           <span class="label">Bendigo · Vic</span>
         </header>
-        <div class="hero__center" data-hero-center>
+        <div class="hero__center">
           <h1 class="wordmark" id="brand">
             <img src="/wordmark.svg" alt="eighty°" width="193" height="45" />
           </h1>
           <p class="label hero__opening">Opening August 2026</p>
         </div>
-        <p class="hero__cue" data-hero-cue>
+        <p class="hero__cue">
           <span class="label">a place to recover.</span>
           <span class="arrow" aria-hidden="true">↓</span>
         </p>
       </section>
 
-      <!-- Act 2 — the 80° draws in -->
+      <!-- Act 2 — the 80° draws in, then sits in place (sticky) while the
+           blurb scrolls past it -->
       <section class="act act--figure" aria-label="A place to recover">
-        <div class="figure-inner">
-          <div class="figure">
-            <svg
-              class="figure__mark"
-              viewBox="0 0 1512 982"
-              fill="none"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <!-- draw order reads 8 → 0 → °  -->
-              <circle class="stroke" data-draw="0" cx="264" cy="246" r="243.5" pathLength="1" />
-              <circle class="stroke" data-draw="1" cx="264" cy="735.5" r="243.5" pathLength="1" />
-              <rect class="stroke" data-draw="2" x="510" y="2.5" width="492" height="977" rx="246" pathLength="1" />
-              <circle class="stroke" data-draw="3" cx="1248" cy="246" r="243.5" pathLength="1" />
-            </svg>
-          </div>
-          <div class="blurb" data-blurb>
-            <p>
-              A new recovery and wellness space in central Bendigo. Hot and cold pools and saunas
-              sit at the centre, with red light, compression, hyperbaric and IV alongside.
-            </p>
-            <p>
-              Come on your own to reset after a big week. Bring the boys after the game, or the
-              mums' group instead of the wines. Either way, you walk out feeling better than you
-              walked in.
-            </p>
-            <p>Open seven days. Walk-ins welcome. Memberships from opening.</p>
-          </div>
+        <div class="figure">
+          <svg
+            class="figure__mark"
+            viewBox="0 0 1512 982"
+            fill="none"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <!-- draw order reads 8 → 0 → °  -->
+            <circle class="stroke" data-draw="0" cx="264" cy="246" r="243.5" pathLength="1" />
+            <circle class="stroke" data-draw="1" cx="264" cy="735.5" r="243.5" pathLength="1" />
+            <rect class="stroke" data-draw="2" x="510" y="2.5" width="492" height="977" rx="246" pathLength="1" />
+            <circle class="stroke" data-draw="3" cx="1248" cy="246" r="243.5" pathLength="1" />
+          </svg>
+        </div>
+        <div class="blurb" data-reveal>
+          <p>
+            A new recovery and wellness space in central Bendigo. Hot and cold pools and saunas
+            sit at the centre, with red light, compression, hyperbaric and IV alongside.
+          </p>
+          <p>
+            Come on your own to reset after a big week. Bring the boys after the game, or the
+            mums' group instead of the wines. Either way, you walk out feeling better than you
+            walked in.
+          </p>
+          <p>Open seven days. Walk-ins welcome. Memberships from opening.</p>
         </div>
       </section>
 
       <!-- Act 3 — keep me in the loop -->
       <section class="act act--signup" id="signup" aria-labelledby="signup-heading">
-        <div class="signup-inner" data-signup>
+        <div class="signup-inner" data-reveal>
           <form class="stamp" novalidate data-form>
             <h2 class="stamp__row stamp__head" id="signup-heading">Keep me in the loop</h2>
             <div class="stamp__row">
@@ -120,9 +118,6 @@
           </form>
 
           <p class="form-msg" data-form-error role="alert" hidden></p>
-
-          <!-- TODO: confirm wording with client -->
-          <p class="privacy">We'll only use your details to let you know when we open. No spam.</p>
         </div>
       </section>
     </main>

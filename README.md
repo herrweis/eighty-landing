@@ -2,7 +2,7 @@
 
 Pre-launch holding page for **eighty°** — a recovery and wellness space in central Bendigo. Opening August 2026.
 
-A single scroll-driven sequence told in three acts. Built with [Vite](https://vitejs.dev/) and [Sass](https://sass-lang.com/), with [GSAP](https://gsap.com/) + ScrollTrigger and [Lenis](https://lenis.studio/) for the motion. No framework.
+A three-act holding page. Built with [Vite](https://vitejs.dev/) and [Sass](https://sass-lang.com/). **No framework and no scroll libraries** — native scroll only (no smooth-scroll, pinning, or scroll-scrubbing). The only enhancement JS is a small IntersectionObserver.
 
 ## Getting started
 
@@ -15,20 +15,25 @@ npm run preview  # preview the production build
 
 ## The three acts
 
-1. **Hero** — the top row (`Find your ritual` · `Bendigo · Vic`) pins; the `eighty°` block and cue travel up. When the wordmark meets the top row, both leave the top together and the screen clears.
-2. **The 80°** — line-draws itself (SVG `stroke-dashoffset`, scrubbed to scroll, drawing 8 → 0 → °) as it rises into view; the blurb lands as the draw nears completion.
-3. **Keep me in the loop** — the stack scrolls up and the sign-up form + footer reveal, with at least half a viewport of breathing room above the form.
+1. **Hero** — `Find your ritual` · `Bendigo · Vic`, the `eighty°` block and `a place to recover.` cue. Settles in on load, then scrolls away naturally.
+2. **The 80°** — line-draws itself once when it enters view (SVG `stroke-dashoffset`, drawing 8 → 0 → °), then **sits in place** via `position: sticky` while the blurb scrolls past it.
+3. **Keep me in the loop** — the sign-up form + footer.
 
 ## Build approach
 
-The **static, stacked page is the baseline** — it reads top-to-bottom and is fully usable with **no JS** or with **`prefers-reduced-motion: reduce`**. `motion.js` layers the scroll choreography on top only when motion is allowed (it adds `.is-animated` to `<html>`; if it can't initialise, the page silently stays static).
+The **static, stacked page is the baseline** — it reads top-to-bottom and is fully usable with **no JS** or with **`prefers-reduced-motion: reduce`**. `motion.js` adds only two things, and only when motion is allowed (it adds `.is-animated` to `<html>`):
+
+- a one-time **line-draw** of the 80° when it scrolls into view (CSS transition, triggered by IntersectionObserver), and
+- gentle **fade-ups** as sections arrive.
+
+The 80° "sitting in place" is plain CSS `position: sticky`, so it works without JS too. There is no scroll hijacking anywhere.
 
 ```
 index.html              # markup for all three acts + footer (content lives here)
 src/
   main.js               # entry — wires up signup + motion
   signup.js             # form validation, stubbed submit, success state
-  motion.js             # GSAP + ScrollTrigger + Lenis, guarded by reduced-motion
+  motion.js             # IntersectionObserver line-draw + reveals (no libraries)
   styles/
     _variables.scss     # tokens (Cedar, Linen, fonts, breakpoint)
     _reset.scss
@@ -49,6 +54,5 @@ public/
 ## Still stubbed (search `TODO`)
 
 - **Sign-up endpoint** — `submitSignup()` in `src/signup.js` is a stub; no provider is wired and no secrets are committed. Point it at a serverless proxy (Mailchimp/Klaviyo/etc).
-- **Privacy line** — placeholder copy under the form; confirm wording with the client.
 - **Social URLs** — Instagram/Facebook links point to `#`.
 - **Share image** — `public/og.png` is a generated placeholder; swap in the final 1200×630.
