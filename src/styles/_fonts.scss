@@ -1,0 +1,43 @@
+// ─── iA Writer Mono S (self-hosted) ─────────────────────────────────────
+// Used for the spaced labels + the form — a close, freely-licensed stand-in
+// for the Figma's Nitti. Files live in /public/fonts.
+
+@font-face {
+  font-family: 'iA Writer Mono S';
+  src:
+    url('/fonts/iAWriterMonoS-Regular.woff2') format('woff2'),
+    url('/fonts/iAWriterMonoS-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'iA Writer Mono S';
+  src:
+    url('/fonts/iAWriterMonoS-Italic.woff2') format('woff2'),
+    url('/fonts/iAWriterMonoS-Italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'iA Writer Mono S';
+  src:
+    url('/fonts/iAWriterMonoS-Bold.woff2') format('woff2'),
+    url('/fonts/iAWriterMonoS-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'iA Writer Mono S';
+  src:
+    url('/fonts/iAWriterMonoS-BoldItalic.woff2') format('woff2'),
+    url('/fonts/iAWriterMonoS-BoldItalic.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}

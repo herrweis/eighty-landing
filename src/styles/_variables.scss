@@ -7,9 +7,9 @@ $linen: #f4efe1; // background
 
 // Typography
 // The Figma file uses Nitti (commercial) for spaced labels + the form and
-// Inria Sans for the blurb. Per the brief we substitute the brand fallback
-// system: Space Mono for labels/form, Space Grotesk for the wordmark/blurb.
-$font-mono: 'Space Mono', ui-monospace, 'SF Mono', 'Menlo', monospace;
+// Inria Sans for the blurb. We self-host iA Writer Mono S (a close, freely
+// licensed Nitti stand-in) for the mono, and Space Grotesk for the display.
+$font-mono: 'iA Writer Mono S', ui-monospace, 'SF Mono', 'Menlo', monospace;
 $font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
 
 // Layout
