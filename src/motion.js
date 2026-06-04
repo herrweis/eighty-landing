@@ -17,7 +17,10 @@ export function initMotion() {
 }
 
 function setupFigureDraw() {
+  const cue = document.querySelector('.hero__cue');
+  const wordmark = document.querySelector('.wordmark');
   const section = document.querySelector('.act--figure');
+  const spacer = document.querySelector('.figure-spacer');
   const art = document.querySelector('.figure__art');
   const blurb = document.querySelector('.blurb');
   const strokes = [...document.querySelectorAll('.figure__mark .stroke')].sort(
@@ -28,6 +31,7 @@ function setupFigureDraw() {
   const N = strokes.length;
   const SEG = 0.34; // each stroke's slice of the global progress (overlapping)
   const STEP = (1 - SEG) / (N - 1); // stagger between strokes → reads 8 → 0 → °
+  const LAST_START = (N - 1) * STEP; // when the ° (last stroke) begins
   const desktop = window.matchMedia('(min-width: 901px)');
 
   let queued = false;
@@ -35,15 +39,22 @@ function setupFigureDraw() {
   const render = () => {
     queued = false;
     const vh = window.innerHeight;
-    let p;
 
+    // 1) Hero cue fades out as the eighty° wordmark rises to the top —
+    //    fully gone by the time the wordmark reaches the viewport top.
+    if (cue && wordmark) {
+      const wt = wordmark.getBoundingClientRect().top;
+      cue.style.opacity = String(clamp(wt / (vh * 0.4), 0, 1));
+    }
+
+    // 2) The 80° draw. On desktop the figure is pinned, so we map the draw
+    //    to scroll through the pinned zone — it only begins once the hero
+    //    has scrolled away (section reaches the top) and the page is clear.
+    let p;
     if (desktop.matches) {
-      // The figure is pinned (sticky); map the draw to how far we've scrolled
-      // through the pinned zone, so it draws IN scrolling down and OUT
-      // scrolling up — all while it stays fixed in place.
-      p = clamp(-section.getBoundingClientRect().top / (vh * 0.6), 0, 1);
+      const dist = (spacer && spacer.offsetHeight) || vh;
+      p = clamp(-section.getBoundingClientRect().top / dist, 0, 1);
     } else {
-      // Mobile: not pinned — draw as the figure rises into view.
       const r = art.getBoundingClientRect();
       p = clamp((vh - (r.top + r.height / 2)) / (vh * 0.5), 0, 1);
     }
@@ -52,7 +63,14 @@ function setupFigureDraw() {
       const local = clamp((p - i * STEP) / SEG, 0, 1);
       strokes[i].style.strokeDashoffset = String(1 - local);
     }
-    if (blurb) blurb.style.opacity = String(clamp((p - 0.55) / 0.4, 0, 1));
+
+    // 3) The blurb comes in over the span the ° draws (starts when the last
+    //    stroke begins, settled when the circle is complete).
+    if (blurb) {
+      const b = clamp((p - LAST_START) / (1 - LAST_START), 0, 1);
+      blurb.style.opacity = String(b);
+      blurb.style.transform = `translateY(${(1 - b) * 34}px)`;
+    }
   };
 
   const onScroll = () => {

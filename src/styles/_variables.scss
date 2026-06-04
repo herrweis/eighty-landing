@@ -6,11 +6,11 @@ $cedar: #766044; // ink / strokes
 $linen: #f4efe1; // background
 
 // Typography
-// The Figma file uses Nitti (commercial) for spaced labels + the form and
-// Inria Sans for the blurb. We self-host iA Writer Mono S (a close, freely
-// licensed Nitti stand-in) for the mono, and Space Grotesk for the display.
-$font-mono: 'iA Writer Mono S', ui-monospace, 'SF Mono', 'Menlo', monospace;
-$font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+// The proper fonts (via Adobe Fonts): Nitti for the spaced labels + form,
+// Inria Sans for the blurb. iA Writer Mono S stays as a self-hosted offline
+// fallback for Nitti.
+$font-mono: 'nitti', 'iA Writer Mono S', ui-monospace, 'SF Mono', 'Menlo', monospace;
+$font-display: 'inria-sans', ui-sans-serif, system-ui, sans-serif;
 
 // Layout
 $page-pad: clamp(16px, 3.2vw, 48px); // matches the 48px desktop / 16px mobile gutters
