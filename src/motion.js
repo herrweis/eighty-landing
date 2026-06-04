@@ -1,35 +1,73 @@
 // ─── Progressive enhancement (native scroll only) ───────────────────────
-// No smooth-scroll, no pinning, no scroll-scrubbing — the page scrolls
-// natively. We only:
-//   1. line-draw the 80° once, when it first enters the viewport, and
-//   2. fade sections up as they arrive.
-// The 80° "sits in place" via CSS position:sticky, not JS.
+// No smooth-scroll, no pinning, no preventDefault — the browser scrolls
+// exactly as it normally would. We only READ the scroll position (throttled
+// to one rAF) and map it to the 80°'s line-draw, so it draws IN on the way
+// down and OUT on the way up while the figure sits fixed (CSS sticky).
 //
-// All of this is gated behind prefers-reduced-motion and is purely additive:
-// with no JS (or reduced motion) the static page is shown in full.
+// Gated behind prefers-reduced-motion and purely additive: with no JS (or
+// reduced motion) the static page shows the 80° already drawn.
 
 export function initMotion() {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // Focus-preserving in-page anchors (skip link) — useful regardless of motion.
   setupAnchors(prefersReduced);
-
   if (prefersReduced) return;
+
   document.documentElement.classList.add('is-animated');
+  setupFigureDraw();
+}
 
-  const io = new IntersectionObserver(
-    (entries, obs) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        const el = entry.target;
-        el.classList.add(el.classList.contains('figure') ? 'is-drawn' : 'is-in');
-        obs.unobserve(el);
-      }
-    },
-    { threshold: 0.3, rootMargin: '0px 0px -8% 0px' }
+function setupFigureDraw() {
+  const section = document.querySelector('.act--figure');
+  const art = document.querySelector('.figure__art');
+  const blurb = document.querySelector('.blurb');
+  const strokes = [...document.querySelectorAll('.figure__mark .stroke')].sort(
+    (a, b) => a.dataset.draw - b.dataset.draw
   );
+  if (!section || !art || !strokes.length) return;
 
-  document.querySelectorAll('.figure, [data-reveal]').forEach((el) => io.observe(el));
+  const N = strokes.length;
+  const SEG = 0.34; // each stroke's slice of the global progress (overlapping)
+  const STEP = (1 - SEG) / (N - 1); // stagger between strokes → reads 8 → 0 → °
+  const desktop = window.matchMedia('(min-width: 901px)');
+
+  let queued = false;
+
+  const render = () => {
+    queued = false;
+    const vh = window.innerHeight;
+    let p;
+
+    if (desktop.matches) {
+      // The figure is pinned (sticky); map the draw to how far we've scrolled
+      // through the pinned zone, so it draws IN scrolling down and OUT
+      // scrolling up — all while it stays fixed in place.
+      p = clamp(-section.getBoundingClientRect().top / (vh * 0.6), 0, 1);
+    } else {
+      // Mobile: not pinned — draw as the figure rises into view.
+      const r = art.getBoundingClientRect();
+      p = clamp((vh - (r.top + r.height / 2)) / (vh * 0.5), 0, 1);
+    }
+
+    for (let i = 0; i < N; i++) {
+      const local = clamp((p - i * STEP) / SEG, 0, 1);
+      strokes[i].style.strokeDashoffset = String(1 - local);
+    }
+    if (blurb) blurb.style.opacity = String(clamp((p - 0.55) / 0.4, 0, 1));
+  };
+
+  const onScroll = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(render);
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  render();
+}
+
+function clamp(n, min, max) {
+  return n < min ? min : n > max ? max : n;
 }
 
 function setupAnchors(reduced) {

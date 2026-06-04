@@ -16,17 +16,17 @@ npm run preview  # preview the production build
 ## The three acts
 
 1. **Hero** — `Find your ritual` · `Bendigo · Vic`, the `eighty°` block and `a place to recover.` cue. Settles in on load, then scrolls away naturally.
-2. **The 80°** — line-draws itself once when it enters view (SVG `stroke-dashoffset`, drawing 8 → 0 → °), then **sits in place** via `position: sticky` while the blurb scrolls past it.
-3. **Keep me in the loop** — the sign-up form + footer.
+2. **The 80°** — fills the viewport (full width or height, whichever fits) and **sits fixed** via `position: sticky`. It line-draws (8 → 0 → °) tied to scroll position — drawing **in** as you scroll down and **out** as you scroll up — all while staying put.
+3. **Keep me in the loop** — a full-height screen with the sign-up form centred; footer at the foot.
 
 ## Build approach
 
 The **static, stacked page is the baseline** — it reads top-to-bottom and is fully usable with **no JS** or with **`prefers-reduced-motion: reduce`**. `motion.js` adds only two things, and only when motion is allowed (it adds `.is-animated` to `<html>`):
 
-- a one-time **line-draw** of the 80° when it scrolls into view (CSS transition, triggered by IntersectionObserver), and
-- gentle **fade-ups** as sections arrive.
+- maps the 80°'s line-draw to the scroll position (read in a throttled rAF, never `preventDefault`-ed), so it draws in/out reversibly, and
+- fades the blurb in with the draw.
 
-The 80° "sitting in place" is plain CSS `position: sticky`, so it works without JS too. There is no scroll hijacking anywhere.
+The 80° "sitting in place" is plain CSS `position: sticky`. There is no smooth-scroll, pinning-that-traps, or scrubbing — the browser scrolls natively; we only read the position.
 
 ```
 index.html              # markup for all three acts + footer (content lives here)

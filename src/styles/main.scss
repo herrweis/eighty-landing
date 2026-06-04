@@ -14,7 +14,6 @@ body {
   background: $linen;
   color: $cedar;
   font-family: $font-display;
-  overflow-x: hidden;
 }
 
 // ─── Shared label style (Space Mono, spaced) ────────────────────────────
@@ -93,10 +92,10 @@ body {
 }
 
 // ─── Act 2 — the 80° + blurb ────────────────────────────────────────────
-// The 80° sits in place (sticky) and the blurb scrolls past it.
-.act--figure {
-  padding-bottom: clamp(32px, 8vh, 110px);
-}
+// The 80° fills the viewport (full width or height, whichever binds), sits
+// fixed via position:sticky, and line-draws to scroll position (see
+// motion.js) so it draws in / out as you scroll down / up.
+$art-aspect: 1.5397; // 1512 / 982
 
 .figure {
   display: flex;
@@ -105,9 +104,16 @@ body {
   height: 100svh;
 }
 
+// Sized to contain the artboard in the viewport — touches whichever edge
+// binds first, exactly like the Figma frame.
+.figure__art {
+  position: relative;
+  width: min(97vw, #{96 * $art-aspect}svh);
+}
+
 .figure__mark {
-  width: min(86vw, 1100px);
-  max-height: 78svh;
+  display: block;
+  width: 100%;
   height: auto;
   overflow: visible;
 
@@ -122,72 +128,87 @@ body {
 .blurb {
   font-family: $font-display;
   font-weight: 400;
-  font-size: clamp(15px, 1.05vw, 17px);
-  line-height: 1.5;
+  font-size: clamp(14px, 1.15vw, 18px);
+  line-height: 1.45;
   color: $cedar;
 
   p + p {
-    margin-top: 1.1em;
+    margin-top: 1em;
   }
 }
 
+// Spacer that gives the sticky figure its scroll distance. Must be real
+// in-flow content — Chrome's position:sticky does not count a parent's
+// padding as room to stay pinned.
+.figure-spacer {
+  height: 0;
+}
+
 @include desktop {
+  // Fixed in place while you scroll through the act
   .figure {
     position: sticky;
     top: 0;
   }
+  // Scroll distance the figure stays pinned (draw-in, then a hold)
+  .figure-spacer {
+    height: 92svh;
+  }
 
-  // Blurb rises into the lower-right and scrolls past the standing 80°
+  // Blurb sits in the lower-right notch of the 80° (Figma: x1080 / y601)
   .blurb {
-    width: min(30%, 360px);
-    margin-left: auto;
-    margin-right: 8vw;
+    position: absolute;
+    left: 71%;
+    top: 60%;
+    width: 24%;
   }
 }
 
 @include mobile {
   .act--figure {
     overflow-x: clip;
+    padding-bottom: clamp(40px, 9vh, 90px);
   }
 
-  // The 80° bleeds past both screen edges, as drawn on the iPhone frame.
-  // Block (not flex) so the oversized SVG isn't shrunk to fit.
   .figure {
     display: block;
     height: auto;
-    padding-top: clamp(40px, 12vh, 110px);
+    padding-top: clamp(48px, 12vh, 110px);
   }
-  .figure__mark {
-    width: 150vw;
-    max-height: none;
-    margin-left: 50%;
-    transform: translateX(-50%);
+  .figure__art {
+    width: min(94vw, #{56 * $art-aspect}svh);
+    margin: 0 auto;
   }
 
   .blurb {
-    width: min(92vw, 360px);
+    width: min(92vw, 380px);
     margin: clamp(40px, 9vh, 80px) auto 0;
     padding: 0 $page-pad;
   }
 }
 
 // ─── Act 3 — keep me in the loop ────────────────────────────────────────
+// Full-height screen: the form sits centred (both axes); footer at the foot.
 .act--signup {
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: clamp(72px, 13vh, 170px);
-  padding-bottom: clamp(40px, 7vh, 90px);
 }
 
 .signup-inner {
-  width: min(92vw, 720px);
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: clamp(80px, 14vh, 200px) $page-pad clamp(40px, 8vh, 110px);
 }
 
 .stamp {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: min(92vw, 720px);
   // Subtle stamped-on-paper tilt, per the Figma form frame
   transform: rotate(-1.5deg);
 }
@@ -240,6 +261,7 @@ body {
 
 // Success state replaces the form
 .signup-done {
+  width: min(92vw, 720px);
   font-family: $font-mono;
   letter-spacing: 0.08em;
   line-height: 1.4;
@@ -333,29 +355,16 @@ body {
     animation: fade-in 1.1s 0.1s ease forwards;
   }
 
-  // 80° line-draws once when it enters view, then stays drawn
+  // 80° starts hidden; motion.js sets each stroke's dash-offset from the
+  // scroll position (draws in on the way down, out on the way up).
   .figure__mark .stroke {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
   }
-  .figure.is-drawn .stroke {
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 1.05s cubic-bezier(0.6, 0.01, 0.2, 1);
-  }
-  .figure.is-drawn .stroke[data-draw='0'] { transition-delay: 0s; }
-  .figure.is-drawn .stroke[data-draw='1'] { transition-delay: 0.3s; }
-  .figure.is-drawn .stroke[data-draw='2'] { transition-delay: 0.6s; }
-  .figure.is-drawn .stroke[data-draw='3'] { transition-delay: 0.9s; }
 
-  // Sections fade up as they arrive
-  [data-reveal] {
+  // Blurb starts hidden; motion.js fades it in with the draw.
+  .blurb {
     opacity: 0;
-    transform: translateY(26px);
-  }
-  [data-reveal].is-in {
-    opacity: 1;
-    transform: none;
-    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 }
 

@@ -70,37 +70,42 @@
            blurb scrolls past it -->
       <section class="act act--figure" aria-label="A place to recover">
         <div class="figure">
-          <svg
-            class="figure__mark"
-            viewBox="0 0 1512 982"
-            fill="none"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <!-- draw order reads 8 → 0 → °  -->
-            <circle class="stroke" data-draw="0" cx="264" cy="246" r="243.5" pathLength="1" />
-            <circle class="stroke" data-draw="1" cx="264" cy="735.5" r="243.5" pathLength="1" />
-            <rect class="stroke" data-draw="2" x="510" y="2.5" width="492" height="977" rx="246" pathLength="1" />
-            <circle class="stroke" data-draw="3" cx="1248" cy="246" r="243.5" pathLength="1" />
-          </svg>
+          <div class="figure__art">
+            <svg
+              class="figure__mark"
+              viewBox="0 0 1512 982"
+              fill="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <!-- draw order reads 8 → 0 → °  -->
+              <circle class="stroke" data-draw="0" cx="264" cy="246" r="243.5" pathLength="1" />
+              <circle class="stroke" data-draw="1" cx="264" cy="735.5" r="243.5" pathLength="1" />
+              <rect class="stroke" data-draw="2" x="510" y="2.5" width="492" height="977" rx="246" pathLength="1" />
+              <circle class="stroke" data-draw="3" cx="1248" cy="246" r="243.5" pathLength="1" />
+            </svg>
+            <div class="blurb">
+              <p>
+                A new recovery and wellness space in central Bendigo. Hot and cold pools and saunas
+                sit at the centre, with red light, compression, hyperbaric and IV alongside.
+              </p>
+              <p>
+                Come on your own to reset after a big week. Bring the boys after the game, or the
+                mums' group instead of the wines. Either way, you walk out feeling better than you
+                walked in.
+              </p>
+              <p>Open seven days. Walk-ins welcome. Memberships from opening.</p>
+            </div>
+          </div>
         </div>
-        <div class="blurb" data-reveal>
-          <p>
-            A new recovery and wellness space in central Bendigo. Hot and cold pools and saunas
-            sit at the centre, with red light, compression, hyperbaric and IV alongside.
-          </p>
-          <p>
-            Come on your own to reset after a big week. Bring the boys after the game, or the
-            mums' group instead of the wines. Either way, you walk out feeling better than you
-            walked in.
-          </p>
-          <p>Open seven days. Walk-ins welcome. Memberships from opening.</p>
-        </div>
+        <!-- Gives the sticky figure room to stay pinned (real flow content,
+             not padding, which Chrome's sticky ignores) -->
+        <div class="figure-spacer" aria-hidden="true"></div>
       </section>
 
-      <!-- Act 3 — keep me in the loop -->
+      <!-- Act 3 — keep me in the loop (full-height; form centred) -->
       <section class="act act--signup" id="signup" aria-labelledby="signup-heading">
-        <div class="signup-inner" data-reveal>
+        <div class="signup-inner">
           <form class="stamp" novalidate data-form>
             <h2 class="stamp__row stamp__head" id="signup-heading">Keep me in the loop</h2>
             <div class="stamp__row">
@@ -119,18 +124,18 @@
 
           <p class="form-msg" data-form-error role="alert" hidden></p>
         </div>
+
+        <footer class="footer" role="contentinfo">
+          <a class="label footer__email" href="mailto:hello@eightydegrees.com.au">hello@eightydegrees.com.au</a>
+          <img class="footer__mark" src="/wordmark.svg" alt="eighty°" width="133" height="31" />
+          <nav class="footer__social" aria-label="Social links">
+            <!-- TODO: add real Instagram / Facebook URLs -->
+            <a href="#" aria-label="eighty° on Instagram"><img src="/instagram.svg" alt="" width="24" height="24" /></a>
+            <a href="#" aria-label="eighty° on Facebook"><img src="/facebook.svg" alt="" width="24" height="24" /></a>
+          </nav>
+        </footer>
       </section>
     </main>
-
-    <footer class="footer">
-      <a class="label footer__email" href="mailto:hello@eightydegrees.com.au">hello@eightydegrees.com.au</a>
-      <img class="footer__mark" src="/wordmark.svg" alt="eighty°" width="133" height="31" />
-      <nav class="footer__social" aria-label="Social links">
-        <!-- TODO: add real Instagram / Facebook URLs -->
-        <a href="#" aria-label="eighty° on Instagram"><img src="/instagram.svg" alt="" width="24" height="24" /></a>
-        <a href="#" aria-label="eighty° on Facebook"><img src="/facebook.svg" alt="" width="24" height="24" /></a>
-      </nav>
-    </footer>
 
     <script type="module" src="/src/main.js"></script>
   </body>
