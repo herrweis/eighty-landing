@@ -22,7 +22,6 @@ function setupFigureDraw() {
   const section = document.querySelector('.act--figure');
   const spacer = document.querySelector('.figure-spacer');
   const art = document.querySelector('.figure__art');
-  const blurb = document.querySelector('.blurb');
   const strokes = [...document.querySelectorAll('.figure__mark .stroke')].sort(
     (a, b) => a.dataset.draw - b.dataset.draw
   );
@@ -31,7 +30,6 @@ function setupFigureDraw() {
   const N = strokes.length;
   const SEG = 0.34; // each stroke's slice of the global progress (overlapping)
   const STEP = (1 - SEG) / (N - 1); // stagger between strokes → reads 8 → 0 → °
-  const LAST_START = (N - 1) * STEP; // when the ° (last stroke) begins
   const desktop = window.matchMedia('(min-width: 901px)');
 
   let queued = false;
@@ -62,14 +60,6 @@ function setupFigureDraw() {
     for (let i = 0; i < N; i++) {
       const local = clamp((p - i * STEP) / SEG, 0, 1);
       strokes[i].style.strokeDashoffset = String(1 - local);
-    }
-
-    // 3) The blurb comes in over the span the ° draws (starts when the last
-    //    stroke begins, settled when the circle is complete).
-    if (blurb) {
-      const b = clamp((p - LAST_START) / (1 - LAST_START), 0, 1);
-      blurb.style.opacity = String(b);
-      blurb.style.transform = `translateY(${(1 - b) * 34}px)`;
     }
   };
 

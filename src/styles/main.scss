@@ -21,7 +21,7 @@ body {
 .label {
   font-family: $font-mono;
   font-weight: 400;
-  font-size: clamp(12px, 1.05vw, 15px);
+  font-size: clamp(14px, 1.15vw, 16px);
   letter-spacing: 0.19em;
   color: $cedar;
 }
@@ -250,8 +250,29 @@ $art-aspect: 1.5397; // 1512 / 982
   }
 }
 
+// Fillable rows get a background wash on hover, a deeper one on focus
+.stamp__row--field {
+  transition: background-color 0.18s ease;
+  cursor: text;
+
+  &:hover {
+    background: rgba($cedar, 0.05);
+  }
+  &:focus-within {
+    background: rgba($cedar, 0.1);
+  }
+}
+
 .stamp__label {
   flex: 0 0 auto;
+}
+
+.stamp__field-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
 }
 
 .stamp__field {
@@ -263,19 +284,59 @@ $art-aspect: 1.5397; // 1512 / 982
   font: inherit;
   letter-spacing: inherit;
   padding: 0;
+  caret-color: $cedar; // visible Cedar caret on focus
 
   &::placeholder {
     color: rgba($cedar, 0.32);
   }
 }
 
+// Blinking caret used as the resting prompt in the first (Name) field.
+// Hidden once the field is focused (the real caret takes over) or filled.
+.stamp__caret {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 2px;
+  height: 1.05em;
+  background: $cedar;
+  transform: translateY(-50%);
+  pointer-events: none;
+  animation: caret-blink 1.1s steps(1) infinite;
+}
+
+.stamp__field:focus ~ .stamp__caret,
+.stamp__field:not(:placeholder-shown) ~ .stamp__caret {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp__caret {
+    animation: none;
+  }
+}
+
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
 .stamp__submit {
   justify-content: space-between;
   text-align: left;
-  transition: opacity 0.2s ease;
+  // Full colour flip on hover
+  transition: background-color 0.2s ease, color 0.2s ease;
 
-  &:hover {
-    opacity: 0.62;
+  &:hover,
+  &:focus-visible {
+    background: $cedar;
+    color: $linen;
   }
 }
 
@@ -387,11 +448,6 @@ $art-aspect: 1.5397; // 1512 / 982
   .figure__mark .stroke {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
-  }
-
-  // Blurb starts hidden; motion.js fades + slides it in as the ° draws.
-  .blurb {
-    opacity: 0;
   }
 }
 

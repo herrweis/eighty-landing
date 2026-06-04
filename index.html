@@ -85,7 +85,7 @@
             <div class="blurb">
               <p>
                 A new recovery and wellness space in central Bendigo. Hot and cold pools and saunas
-                sit at the centre, with red light, compression, hyperbaric and IV alongside.
+                 at the centre, with red light, compression, hyperbaric and IV alongside.
               </p>
               <p>
                 Come on your own to reset after a big week. Bring the boys after the game, or the
@@ -106,13 +106,19 @@
         <div class="signup-inner">
           <form class="stamp" novalidate data-form>
             <h2 class="stamp__row stamp__head" id="signup-heading">Keep me in the loop</h2>
-            <div class="stamp__row">
+            <div class="stamp__row stamp__row--field">
               <label class="stamp__label" for="name">Name:</label>
-              <input class="stamp__field" id="name" name="name" type="text" placeholder="type here" autocomplete="name" />
+              <span class="stamp__field-wrap">
+                <!-- blinking caret stands in for the placeholder while empty -->
+                <input class="stamp__field" id="name" name="name" type="text" placeholder=" " autocomplete="name" />
+                <span class="stamp__caret" aria-hidden="true"></span>
+              </span>
             </div>
-            <div class="stamp__row">
+            <div class="stamp__row stamp__row--field">
               <label class="stamp__label" for="email">Email:</label>
-              <input class="stamp__field" id="email" name="email" type="email" placeholder="type here" autocomplete="email" inputmode="email" />
+              <span class="stamp__field-wrap">
+                <input class="stamp__field" id="email" name="email" type="email" placeholder="type here" autocomplete="email" inputmode="email" />
+              </span>
             </div>
             <button class="stamp__row stamp__submit" type="submit">
               <span>Notify me</span>
