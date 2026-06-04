@@ -20,17 +20,14 @@ function setupFigureDraw() {
   const cue = document.querySelector('.hero__cue');
   const wordmark = document.querySelector('.wordmark');
   const section = document.querySelector('.act--figure');
-  const spacer = document.querySelector('.figure-spacer');
-  const art = document.querySelector('.figure__art');
   const strokes = [...document.querySelectorAll('.figure__mark .stroke')].sort(
     (a, b) => a.dataset.draw - b.dataset.draw
   );
-  if (!section || !art || !strokes.length) return;
+  if (!section || !strokes.length) return;
 
   const N = strokes.length;
   const SEG = 0.34; // each stroke's slice of the global progress (overlapping)
   const STEP = (1 - SEG) / (N - 1); // stagger between strokes → reads 8 → 0 → °
-  const desktop = window.matchMedia('(min-width: 901px)');
 
   let queued = false;
 
@@ -45,17 +42,13 @@ function setupFigureDraw() {
       cue.style.opacity = String(clamp(wt / (vh * 0.4), 0, 1));
     }
 
-    // 2) The 80° draw. On desktop the figure is pinned, so we map the draw
-    //    to scroll through the pinned zone — it only begins once the hero
-    //    has scrolled away (section reaches the top) and the page is clear.
-    let p;
-    if (desktop.matches) {
-      const dist = (spacer && spacer.offsetHeight) || vh;
-      p = clamp(-section.getBoundingClientRect().top / dist, 0, 1);
-    } else {
-      const r = art.getBoundingClientRect();
-      p = clamp((vh - (r.top + r.height / 2)) / (vh * 0.5), 0, 1);
-    }
+    // 2) The 80° draw, mapped to scroll through the pinned zone. LEAD starts
+    //    it a little before the figure fully pins (as the hero clears), DRAW
+    //    is how much scroll (in viewports) a full draw takes. Same on mobile.
+    const LEAD = 0.5;
+    const DRAW = 1.05;
+    const top = section.getBoundingClientRect().top;
+    const p = clamp((vh * LEAD - top) / (vh * DRAW), 0, 1);
 
     for (let i = 0; i < N; i++) {
       const local = clamp((p - i * STEP) / SEG, 0, 1);

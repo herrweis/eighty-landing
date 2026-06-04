@@ -116,18 +116,22 @@ body {
 // motion.js) so it draws in / out as you scroll down / up.
 $art-aspect: 1.5397; // 1512 / 982
 
+// Pinned (sticky) on both breakpoints. The 80° stays fixed and centred while
+// it line-draws; overflow-x: clip on the figure itself lets the art bleed off
+// the edges on mobile without breaking sticky or causing a horizontal scroll.
 .figure {
+  position: sticky;
+  top: 0;
+  height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100svh;
+  overflow-x: clip;
 }
 
-// Sized to contain the artboard in the viewport — touches whichever edge
-// binds first, exactly like the Figma frame.
 .figure__art {
   position: relative;
-  width: min(97vw, #{96 * $art-aspect}svh);
+  width: min(97vw, #{96 * $art-aspect}svh); // contain (full width or height)
 }
 
 .figure__mark {
@@ -144,7 +148,12 @@ $art-aspect: 1.5397; // 1512 / 982
   }
 }
 
+// The blurb is real flow content after the pinned figure: it scrolls up over
+// the standing 80° on its own (no transform) and settles into the notch as
+// the draw completes — then the whole section scrolls on.
 .blurb {
+  position: relative;
+  z-index: 1;
   font-family: $font-display;
   font-weight: 400;
   font-size: clamp(14px, 1.15vw, 18px);
@@ -156,54 +165,36 @@ $art-aspect: 1.5397; // 1512 / 982
   }
 }
 
-// Spacer that gives the sticky figure its scroll distance. Must be real
-// in-flow content — Chrome's position:sticky does not count a parent's
-// padding as room to stay pinned.
+// Real in-flow tail that holds the figure pinned through the draw + hold.
 .figure-spacer {
   height: 0;
 }
 
 @include desktop {
-  // Fixed in place while you scroll through the act
-  .figure {
-    position: sticky;
-    top: 0;
-  }
-  // Scroll distance the figure stays pinned == the draw distance, so the
-  // 80° finishes drawing exactly as the section releases and scrolls up.
-  .figure-spacer {
-    height: 110svh;
-  }
-
-  // Blurb sits in the lower-right notch of the 80° (Figma: x1080 / y601)
+  // Lower-right notch of the 80° (Figma: x1080 / y601). The top margin keeps
+  // it off-screen through the draw; it then rises into the notch.
   .blurb {
-    position: absolute;
-    left: 71%;
-    top: 60%;
-    width: 24%;
+    width: min(330px, 26vw);
+    margin: 42svh 8.5vw 0 auto;
+  }
+  .figure-spacer {
+    height: 32svh;
   }
 }
 
 @include mobile {
-  .act--figure {
-    overflow-x: clip;
-    padding-bottom: clamp(40px, 9vh, 90px);
-  }
-
-  .figure {
-    display: block;
-    height: auto;
-    padding-top: clamp(48px, 12vh, 110px);
-  }
+  // The 80° bleeds off both edges (clipped by .figure)
   .figure__art {
-    width: min(94vw, #{56 * $art-aspect}svh);
-    margin: 0 auto;
+    width: 132vw;
   }
 
   .blurb {
-    width: min(92vw, 380px);
-    margin: clamp(40px, 9vh, 80px) auto 0;
+    width: min(86vw, 380px);
+    margin: 40svh auto 0;
     padding: 0 $page-pad;
+  }
+  .figure-spacer {
+    height: 24svh;
   }
 }
 
@@ -387,7 +378,9 @@ $art-aspect: 1.5397; // 1512 / 982
   letter-spacing: 0.12em;
 }
 .footer__mark__container {
-  flex: 1 0 auto;
+  flex: 2 0 auto;
+  display: flex;
+  justify-content: center;
 }
 
 .footer__mark {
@@ -396,7 +389,7 @@ $art-aspect: 1.5397; // 1512 / 982
 }
 
 .footer__social {
-  flex: 1 0 auto;
+  flex: 2 0 auto;
   display: flex;
   justify-content: flex-end;
   gap: 16px;
@@ -404,12 +397,27 @@ $art-aspect: 1.5397; // 1512 / 982
   a {
     display: block;
     transition: opacity 0.2s ease;
-  }
-  a:hover {
-    opacity: 0.62;
+    color: $cedar;
+    border-radius: 8px;
+    padding: 8px;
+    transition: background-color 0.2s ease;
   }
 
-  img {
+  a:hover {
+    background-color: $cedar;
+
+    svg path {
+      stroke: $linen;
+    }
+  }
+
+  svg path {
+    transition: stroke 0.2s ease;
+    stroke: $cedar;
+  }
+
+  img,
+  svg {
     width: 24px;
     height: 24px;
   }
