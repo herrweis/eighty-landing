@@ -1,18 +1,29 @@
 // ─── eighty° design tokens ──────────────────────────────────────────────
 // Sourced from Figma: "eighty° — exploration and playground"
 
-// Colours
+// Colours (Figma variables)
 $cedar: #766044; // ink / strokes
 $linen: #f4efe1; // background
 
 // Typography
-// "Nitti" is a commercial font from the Figma file. We fall back to
-// Spline Sans Mono (a close humanist monospace) so the page renders
-// faithfully without it; drop a licensed Nitti webfont in to match exactly.
-$font-mono: 'Nitti', 'Spline Sans Mono', ui-monospace, 'SF Mono', 'Menlo', monospace;
-$font-sans: 'Inria Sans', ui-sans-serif, system-ui, sans-serif;
+// The Figma file uses Nitti (commercial) for spaced labels + the form and
+// Inria Sans for the blurb. Per the brief we substitute the brand fallback
+// system: Space Mono for labels/form, Space Grotesk for the wordmark/blurb.
+$font-mono: 'Space Mono', ui-monospace, 'SF Mono', 'Menlo', monospace;
+$font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
 
-// Artboard — the Figma frame is a fixed 1512 × 4661 canvas that we scale
-// down to the viewport width. All positions below are expressed against it.
-$art-w: 1512;
-$art-h: 4661;
+// Layout
+$page-pad: clamp(16px, 3.2vw, 48px); // matches the 48px desktop / 16px mobile gutters
+$bp-mobile: 900px; // below this the layout follows the iPhone frames
+
+@mixin mobile {
+  @media (max-width: $bp-mobile) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: ($bp-mobile + 1px)) {
+    @content;
+  }
+}

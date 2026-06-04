@@ -1,238 +1,338 @@
 @use 'variables' as *;
 @use 'reset';
 
-// ─── Page shell ─────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════
+//  eighty° — pre-launch landing page
+//  This stylesheet is the STATIC baseline: with no JS (or with
+//  prefers-reduced-motion) the three acts simply stack top-to-bottom and
+//  read in full. main.js layers the scroll choreography on top.
+// ═══════════════════════════════════════════════════════════════════════
+
 body {
   background: $linen;
   color: $cedar;
-  font-family: $font-sans;
+  font-family: $font-display;
+  overflow-x: hidden;
 }
 
-// The stage fills the viewport width and clips the artboard; the artboard
-// keeps its native 1512px coordinate space and is scaled to fit via JS
-// (see main.js), which sets `--scale` and the stage height.
-.stage {
-  width: 100%;
-  overflow: hidden;
-}
-
-.artboard {
-  position: relative;
-  width: #{$art-w}px;
-  height: #{$art-h}px;
-  margin: 0 auto;
-  background: $linen;
-  transform-origin: top left;
-  transform: scale(var(--scale, 1));
-}
-
-// ─── Top meta row ───────────────────────────────────────────────────────
-.meta {
-  position: absolute;
-  top: 45px;
+// ─── Shared label style (Space Mono, spaced) ────────────────────────────
+.label {
   font-family: $font-mono;
-  font-weight: 300;
-  font-size: 14px;
-  letter-spacing: 2.8px;
-  text-transform: uppercase;
-  white-space: nowrap;
-
-  &--left {
-    left: 51px;
-  }
-
-  &--right {
-    right: 51px;
-  }
+  font-weight: 400;
+  font-size: clamp(12px, 1.05vw, 15px);
+  letter-spacing: 0.19em;
+  color: $cedar;
 }
 
-// ─── The Stamp (sign-up card) ───────────────────────────────────────────
-.stamp {
-  position: absolute;
-  left: 398px;
-  top: 186px;
-  width: 715.358px;
-  height: 270.635px;
+.arrow {
+  font-family: $font-mono;
+}
+
+// ─── Acts share full-height framing ─────────────────────────────────────
+.act {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
   display: flex;
+  flex-direction: column;
+}
+
+// ─── Act 1 — hero ───────────────────────────────────────────────────────
+.act--hero {
   align-items: center;
   justify-content: center;
 }
 
-.stamp__inner {
-  width: 709px;
-  transform: rotate(-1.5deg);
+.topbar {
+  position: absolute;
+  inset: 0 0 auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: clamp(16px, 3vw, 45px) $page-pad;
+  z-index: 10;
+
+  .label {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+}
+
+.hero__center {
+  text-align: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: clamp(14px, 1.8vw, 22px);
+}
+
+.wordmark img {
+  width: clamp(150px, 13vw, 193px);
+  height: auto;
+}
+
+.hero__opening {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.hero__cue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(28px, 6vh, 58px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+
+  .arrow {
+    font-size: 14px;
+  }
+}
+
+// ─── Act 2 — the 80° + blurb ────────────────────────────────────────────
+.act--figure {
+  justify-content: center;
+  padding: clamp(48px, 9vh, 120px) 0;
+}
+
+.figure-inner {
+  position: relative;
+  width: min(92vw, 1280px);
+  margin: 0 auto;
+}
+
+.figure__mark {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+
+  .stroke {
+    fill: none;
+    stroke: $cedar;
+    // Stroke is 5px in the 1512-unit viewBox; it scales with the art so the
+    // line weight stays proportional at every size, matching both frames.
+    stroke-width: 5;
+  }
+}
+
+.blurb {
+  font-family: $font-display;
+  font-weight: 300;
+  font-size: clamp(14px, 1.05vw, 16px);
+  line-height: 1.5;
+  color: $cedar;
+
+  p + p {
+    margin-top: 1.1em;
+  }
+}
+
+@include desktop {
+  // Blurb sits in the bottom-right notch of the figure (Figma: x1080/y601)
+  .blurb {
+    position: absolute;
+    left: 70%;
+    top: 60%;
+    width: 27%;
+  }
+}
+
+@include mobile {
+  .act--figure {
+    overflow-x: clip;
+  }
+
+  // The 80° bleeds past both screen edges, exactly as drawn on the iPhone frame
+  .figure {
+    width: 150vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .blurb {
+    width: min(92vw, 360px);
+    margin: clamp(36px, 8vh, 72px) auto 0;
+    padding: 0 $page-pad;
+  }
+}
+
+// ─── Act 3 — keep me in the loop ────────────────────────────────────────
+.act--signup {
+  justify-content: center;
+  // At least half a viewport of breathing room above the form
+  padding-top: 60svh;
+  padding-bottom: clamp(40px, 8vh, 96px);
+}
+
+.signup-inner {
+  width: min(92vw, 709px);
+  margin: 0 auto;
+}
+
+.stamp {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  // Subtle stamped-on-paper tilt, per the Figma form frame
+  transform: rotate(-1.5deg);
 }
 
 .stamp__row {
   display: flex;
   align-items: center;
-  gap: 3px;
-  padding: 7.742px 12.903px;
-  border: 1.923px solid $cedar;
+  gap: 0.2em;
+  padding: clamp(6px, 0.75vw, 9px) clamp(10px, 1vw, 14px);
+  border: 1.6px solid $cedar;
+  font-family: $font-mono;
+  font-weight: 400;
+  font-size: clamp(20px, 3.4vw, 38px);
+  letter-spacing: 0.1em;
+  line-height: 1.15;
 
   & + & {
-    margin-top: -1.923px; // collapse shared borders
+    margin-top: -1.6px; // collapse shared borders
   }
+}
 
-  font-family: $font-mono;
-  font-weight: 300;
-  font-size: 40.856px;
-  line-height: normal;
-  letter-spacing: 4.0856px;
+.stamp__head {
+  font-weight: 400;
 }
 
 .stamp__label {
   flex: 0 0 auto;
 }
 
-// Transparent fill-in fields keep the "stamp to complete" look while
-// making the card a working capture form.
 .stamp__field {
-  flex: 1 1 0;
+  flex: 1 1 auto;
   min-width: 0;
   background: none;
   border: none;
   outline: none;
-  font-family: inherit;
-  font-size: inherit;
+  font: inherit;
   letter-spacing: inherit;
   padding: 0;
 
   &::placeholder {
-    color: rgba($cedar, 0.4);
+    color: rgba($cedar, 0.3);
   }
 }
 
 .stamp__submit {
-  display: flex;
-  align-items: center;
   justify-content: space-between;
-  width: 100%;
-  font: inherit;
-  letter-spacing: inherit;
   text-align: left;
   transition: opacity 0.2s ease;
 
   &:hover {
-    opacity: 0.6;
-  }
-
-  .stamp__arrow {
-    text-align: right;
+    opacity: 0.62;
   }
 }
 
-// ─── Hero copy ──────────────────────────────────────────────────────────
-.hero-title {
-  position: absolute;
-  left: 408px;
-  top: 579px;
-  width: 1034px;
-  font-family: $font-sans;
-  font-weight: 400;
-  font-size: 80px;
-  line-height: normal;
-}
+// Success state replaces the form
+.signup-done {
+  font-family: $font-mono;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  border: 1.6px solid $cedar;
+  padding: clamp(18px, 2.4vw, 30px) clamp(16px, 2vw, 26px);
+  transform: rotate(-1.5deg);
+  font-size: clamp(20px, 3.2vw, 36px);
 
-.hero-sub {
-  position: absolute;
-  left: 416px;
-  top: 775px;
-  width: 562px;
-  transform: translateY(-100%); // bottom-anchored at 775 in the design
-  font-family: $font-sans;
-  font-weight: 300;
-  font-size: 18px;
-  line-height: 1.1;
+  span {
+    display: block;
+  }
 
-  p {
-    min-height: 1.1em; // preserve the empty spacer line
+  .signup-done__sub {
+    color: rgba($cedar, 0.55);
   }
 }
 
-.logo {
-  position: absolute;
-  left: 987px;
-  top: 746px;
-  width: 113px;
-  height: 26.406px;
+.form-msg {
+  margin-top: 16px;
+  font-family: $font-mono;
+  font-size: 13px;
+  letter-spacing: 0.06em;
   color: $cedar;
+
+  &[hidden] {
+    display: none;
+  }
 }
 
-.scroll-cue {
-  position: absolute;
-  left: 50%;
-  top: 924px;
-  transform: translateX(-50%);
-  width: 208px;
+.privacy {
+  margin-top: 18px;
+  font-family: $font-mono;
+  font-size: clamp(11px, 0.85vw, 12px);
+  letter-spacing: 0.08em;
+  color: rgba($cedar, 0.55);
+}
+
+// ─── Footer ─────────────────────────────────────────────────────────────
+.footer {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 5px;
-  font-family: $font-mono;
-  font-weight: 400;
-  font-size: 14px;
-  letter-spacing: 2.66px;
-  text-align: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: clamp(20px, 3vw, 36px) $page-pad;
 }
 
-// ─── The "80°" figure ───────────────────────────────────────────────────
-.eighty {
-  position: absolute;
-  top: 0;
-  left: 0; // anchor children to the artboard origin
+.footer__email {
+  font-size: clamp(11px, 0.9vw, 14px);
+  letter-spacing: 0.12em;
 }
 
-.eighty__circle,
-.eighty__pill {
-  position: absolute;
-  border: 9px solid $cedar;
+.footer__mark {
+  width: 110px;
+  height: auto;
 }
 
-.eighty__circle {
-  width: 504px;
-  height: 504px;
-  border-radius: 50%;
+.footer__social {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  a {
+    display: block;
+    transition: opacity 0.2s ease;
+  }
+  a:hover {
+    opacity: 0.62;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
 }
 
-.eighty__pill {
-  left: 504px;
-  top: 1175px;
-  width: 504px;
-  height: 1006px;
-  border-radius: 252px; // full stadium
+@include mobile {
+  // Mobile footer drops the centred wordmark (email + socials only)
+  .footer__mark {
+    display: none;
+  }
 }
 
-.eighty__circle--tl {
-  left: 0;
-  top: 1175px;
-}
+// ═══════════════════════════════════════════════════════════════════════
+//  Motion layer — only active when JS adds `.is-animated` to <html>
+//  (i.e. JS ran AND prefers-reduced-motion is not set). Everything above
+//  is the fully-readable resting state.
+// ═══════════════════════════════════════════════════════════════════════
+.is-animated {
+  // Hide strokes until the scrubbed draw reveals them
+  .figure__mark .stroke {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
 
-.eighty__circle--tr {
-  left: 1008px;
-  top: 1175px;
-}
+  // Blurb starts just below its resting spot
+  .blurb {
+    opacity: 0;
+  }
 
-.eighty__circle--bl {
-  left: 0;
-  top: 1676px;
-  height: 505px;
-}
-
-// ─── Services list ──────────────────────────────────────────────────────
-.services {
-  position: absolute;
-  left: 1056px;
-  top: 1751px;
-  width: 428px;
-  font-family: $font-mono;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 56px;
-  letter-spacing: 2px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  // Form/footer reveal target
+  .signup-inner {
+    opacity: 0;
+  }
 }
