@@ -21,7 +21,7 @@ body {
 .label {
   font-family: $font-mono;
   font-weight: 400;
-  font-size: clamp(14px, 1.15vw, 16px);
+  font-size: clamp(12px, 1.05vw, 16px);
   letter-spacing: 0.19em;
   color: $cedar;
 }
