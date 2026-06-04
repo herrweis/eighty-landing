@@ -1,0 +1,18 @@
+// ─── eighty° design tokens ──────────────────────────────────────────────
+// Sourced from Figma: "eighty° — exploration and playground"
+
+// Colours
+$cedar: #766044; // ink / strokes
+$linen: #f4efe1; // background
+
+// Typography
+// "Nitti" is a commercial font from the Figma file. We fall back to
+// Spline Sans Mono (a close humanist monospace) so the page renders
+// faithfully without it; drop a licensed Nitti webfont in to match exactly.
+$font-mono: 'Nitti', 'Spline Sans Mono', ui-monospace, 'SF Mono', 'Menlo', monospace;
+$font-sans: 'Inria Sans', ui-sans-serif, system-ui, sans-serif;
+
+// Artboard — the Figma frame is a fixed 1512 × 4661 canvas that we scale
+// down to the viewport width. All positions below are expressed against it.
+$art-w: 1512;
+$art-h: 4661;

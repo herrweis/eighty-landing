@@ -1,0 +1,238 @@
+@use 'variables' as *;
+@use 'reset';
+
+// ─── Page shell ─────────────────────────────────────────────────────────
+body {
+  background: $linen;
+  color: $cedar;
+  font-family: $font-sans;
+}
+
+// The stage fills the viewport width and clips the artboard; the artboard
+// keeps its native 1512px coordinate space and is scaled to fit via JS
+// (see main.js), which sets `--scale` and the stage height.
+.stage {
+  width: 100%;
+  overflow: hidden;
+}
+
+.artboard {
+  position: relative;
+  width: #{$art-w}px;
+  height: #{$art-h}px;
+  margin: 0 auto;
+  background: $linen;
+  transform-origin: top left;
+  transform: scale(var(--scale, 1));
+}
+
+// ─── Top meta row ───────────────────────────────────────────────────────
+.meta {
+  position: absolute;
+  top: 45px;
+  font-family: $font-mono;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  &--left {
+    left: 51px;
+  }
+
+  &--right {
+    right: 51px;
+  }
+}
+
+// ─── The Stamp (sign-up card) ───────────────────────────────────────────
+.stamp {
+  position: absolute;
+  left: 398px;
+  top: 186px;
+  width: 715.358px;
+  height: 270.635px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stamp__inner {
+  width: 709px;
+  transform: rotate(-1.5deg);
+  display: flex;
+  flex-direction: column;
+}
+
+.stamp__row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 7.742px 12.903px;
+  border: 1.923px solid $cedar;
+
+  & + & {
+    margin-top: -1.923px; // collapse shared borders
+  }
+
+  font-family: $font-mono;
+  font-weight: 300;
+  font-size: 40.856px;
+  line-height: normal;
+  letter-spacing: 4.0856px;
+}
+
+.stamp__label {
+  flex: 0 0 auto;
+}
+
+// Transparent fill-in fields keep the "stamp to complete" look while
+// making the card a working capture form.
+.stamp__field {
+  flex: 1 1 0;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  padding: 0;
+
+  &::placeholder {
+    color: rgba($cedar, 0.4);
+  }
+}
+
+.stamp__submit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  .stamp__arrow {
+    text-align: right;
+  }
+}
+
+// ─── Hero copy ──────────────────────────────────────────────────────────
+.hero-title {
+  position: absolute;
+  left: 408px;
+  top: 579px;
+  width: 1034px;
+  font-family: $font-sans;
+  font-weight: 400;
+  font-size: 80px;
+  line-height: normal;
+}
+
+.hero-sub {
+  position: absolute;
+  left: 416px;
+  top: 775px;
+  width: 562px;
+  transform: translateY(-100%); // bottom-anchored at 775 in the design
+  font-family: $font-sans;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 1.1;
+
+  p {
+    min-height: 1.1em; // preserve the empty spacer line
+  }
+}
+
+.logo {
+  position: absolute;
+  left: 987px;
+  top: 746px;
+  width: 113px;
+  height: 26.406px;
+  color: $cedar;
+}
+
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  top: 924px;
+  transform: translateX(-50%);
+  width: 208px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  font-family: $font-mono;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 2.66px;
+  text-align: center;
+}
+
+// ─── The "80°" figure ───────────────────────────────────────────────────
+.eighty {
+  position: absolute;
+  top: 0;
+  left: 0; // anchor children to the artboard origin
+}
+
+.eighty__circle,
+.eighty__pill {
+  position: absolute;
+  border: 9px solid $cedar;
+}
+
+.eighty__circle {
+  width: 504px;
+  height: 504px;
+  border-radius: 50%;
+}
+
+.eighty__pill {
+  left: 504px;
+  top: 1175px;
+  width: 504px;
+  height: 1006px;
+  border-radius: 252px; // full stadium
+}
+
+.eighty__circle--tl {
+  left: 0;
+  top: 1175px;
+}
+
+.eighty__circle--tr {
+  left: 1008px;
+  top: 1175px;
+}
+
+.eighty__circle--bl {
+  left: 0;
+  top: 1676px;
+  height: 505px;
+}
+
+// ─── Services list ──────────────────────────────────────────────────────
+.services {
+  position: absolute;
+  left: 1056px;
+  top: 1751px;
+  width: 428px;
+  font-family: $font-mono;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 56px;
+  letter-spacing: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
