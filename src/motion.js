@@ -42,13 +42,12 @@ function setupFigureDraw() {
       cue.style.opacity = String(clamp(wt / (vh * 0.4), 0, 1));
     }
 
-    // 2) The 80° draw, mapped to scroll through the pinned zone. LEAD starts
-    //    it a little before the figure fully pins (as the hero clears), DRAW
-    //    is how much scroll (in viewports) a full draw takes. Same on mobile.
-    const LEAD = 0.5;
-    const DRAW = 1.05;
+    // 2) The 80° draw — only once the figure is pinned (top has reached 0),
+    //    so it never draws while still scrolling into view. DRAW is how much
+    //    pinned scroll (in viewports) a full draw takes. Same on mobile.
+    const DRAW = 1;
     const top = section.getBoundingClientRect().top;
-    const p = clamp((vh * LEAD - top) / (vh * DRAW), 0, 1);
+    const p = clamp(-top / (vh * DRAW), 0, 1);
 
     for (let i = 0; i < N; i++) {
       const local = clamp((p - i * STEP) / SEG, 0, 1);

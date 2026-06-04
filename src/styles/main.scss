@@ -12,7 +12,7 @@
 // ═══════════════════════════════════════════════════════════════════════
 
 body {
-  background: $linen;
+  background-color: $linen;
   color: $cedar;
   font-family: $font-display;
 }
@@ -172,29 +172,36 @@ $art-aspect: 1.5397; // 1512 / 982
 
 @include desktop {
   // Lower-right notch of the 80° (Figma: x1080 / y601). The top margin keeps
-  // it off-screen through the draw; it then rises into the notch.
+  // it off-screen through the draw; the spacer is tuned so the figure unpins
+  // exactly as the blurb reaches the notch — so it docks there and they then
+  // scroll on together (no scrolling further up over the 80°).
   .blurb {
     width: min(330px, 26vw);
-    margin: 42svh 8.5vw 0 auto;
+    margin: 85svh 8.5vw 0 auto;
   }
   .figure-spacer {
-    height: 32svh;
+    height: 12svh;
   }
 }
 
 @include mobile {
-  // The 80° bleeds off both edges (clipped by .figure)
+  // The 80° bleeds off both edges (clipped by .figure) and sits high so the
+  // blurb has room to dock below it rather than over it.
+  .figure {
+    align-items: flex-start;
+    padding-top: 19svh;
+  }
   .figure__art {
-    width: 132vw;
+    width: 124vw;
   }
 
   .blurb {
-    width: min(86vw, 380px);
-    margin: 40svh auto 0;
+    width: min(86vw, 400px);
+    margin: 48svh auto 0;
     padding: 0 $page-pad;
   }
   .figure-spacer {
-    height: 24svh;
+    height: 8svh;
   }
 }
 
