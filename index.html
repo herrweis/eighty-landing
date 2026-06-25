@@ -45,6 +45,28 @@
   <body>
     <a class="skip-link" href="#signup">Skip to sign-up</a>
 
+    <!-- Fixed background layers behind every act (painted back → front):
+         the water photo, a dark wash for Act 3, and the sauna video on top.
+         motion.js drives their opacity: the video carries Acts 1–2 and the
+         80° draws over it; once the water fills the shapes the video fades to
+         carbon, the picture is revealed below, and the wash washes in for Act 3. -->
+    <div class="bg-water" aria-hidden="true"></div>
+    <div class="bg-scrim" aria-hidden="true"></div>
+    <div class="bg-video" aria-hidden="true">
+      <video
+        class="bg-video__media"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+        poster="/video/sauna-bg-poster.jpg"
+      >
+        <source src="/video/sauna-bg.webm" type="video/webm" />
+        <source src="/video/sauna-bg.mp4" type="video/mp4" />
+      </video>
+    </div>
+
     <main>
       <!-- Act 1 — hero -->
       <section class="act act--hero" aria-labelledby="brand">
@@ -56,7 +78,7 @@
           <h1 class="wordmark" id="brand">
             <img src="/wordmark.svg" alt="eighty°" width="193" height="45" />
           </h1>
-          <p class="label hero__opening">Opening August 2026</p>
+          <p class="label hero__opening">Opening October 2026</p>
         </div>
         <p class="hero__cue">
           <span class="label">a place to recover.</span>
@@ -68,6 +90,9 @@
            blurb scrolls past it -->
       <section class="act act--figure" aria-label="A place to recover">
         <div class="figure">
+          <!-- The water photo clipped to the 80°, masked by the same shapes the
+               strokes draw. Fades in once the line-draw completes. -->
+          <div class="figure__fill" aria-hidden="true"></div>
           <div class="figure__art">
             <svg
               class="figure__mark"

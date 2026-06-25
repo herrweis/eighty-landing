@@ -12,9 +12,73 @@
 // ═══════════════════════════════════════════════════════════════════════
 
 body {
-  background-color: $linen;
+  background-color: $carbon; // the dark ground beneath every act
   color: $cedar;
   font-family: $font-display;
+}
+
+// ─── Backgrounds ────────────────────────────────────────────────────────
+// Reusable water-photo paint (WebP with a JPEG fallback), centred + covering.
+@mixin water-photo {
+  background-color: $carbon;
+  background-image: url('/cold-plunge.jpg');
+  background-image: image-set(
+    url('/cold-plunge.webp') type('image/webp'),
+    url('/cold-plunge.jpg') type('image/jpeg')
+  );
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+// Fixed background layers, painted back → front: water photo, dark wash, video.
+// All three are pinned to the viewport; motion.js cross-fades them by opacity.
+.bg-water,
+.bg-scrim,
+.bg-video {
+  position: fixed;
+  inset: 0;
+}
+
+// The sauna video sits on top and carries Acts 1–2 (the 80° draws over it).
+// motion.js fades it out to carbon once the water has filled the shapes.
+.bg-video {
+  z-index: -1;
+  overflow: hidden;
+  background-color: $carbon;
+}
+
+.bg-video__media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+// Dark wash over the picture for Act 3 — fades in (fixed, never scrolls) so the
+// form keeps contrast. Hidden until the animation drives it; the static page
+// uses the section-scoped scrim below instead.
+.bg-scrim {
+  z-index: -2;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba($carbon, 0.45),
+    rgba($carbon, 0.7) 45%,
+    rgba($carbon, 0.82)
+  );
+}
+
+// The water photo, revealed beneath the video as the 80° completes.
+.bg-water {
+  z-index: -3;
+  @include water-photo;
+}
+
+main {
+  position: relative;
+  z-index: 0;
 }
 
 // ─── Shared label style (Space Mono, spaced) ────────────────────────────
@@ -55,6 +119,7 @@ body {
   .label {
     text-transform: uppercase;
     letter-spacing: 0.2em;
+    color: rgba($linen, 1);
   }
 }
 
@@ -74,6 +139,7 @@ body {
 .hero__opening {
   text-transform: uppercase;
   letter-spacing: 0.2em;
+  color: rgba($carbon, 1);
 }
 
 .hero__cue {
@@ -86,6 +152,11 @@ body {
   align-items: center;
   gap: 8px;
   text-align: center;
+  color: rgba($carbon, 1);
+
+  .label {
+    color: rgba($carbon, 1);
+  }
 
   .arrow {
     font-size: 14px;
@@ -120,6 +191,9 @@ $art-aspect: 1.5397; // 1512 / 982
 // it line-draws; overflow-x: clip on the figure itself lets the art bleed off
 // the edges on mobile without breaking sticky or causing a horizontal scroll.
 .figure {
+  // Shared art width — the 80° contains within the viewport. Both the stroke
+  // SVG and the masked fill below read from this so their shapes coincide.
+  --art-w: min(97vw, #{96 * $art-aspect}svh);
   position: sticky;
   top: 0;
   height: 100svh;
@@ -129,9 +203,26 @@ $art-aspect: 1.5397; // 1512 / 982
   overflow-x: clip;
 }
 
+// Water photo clipped to the 80° (the same shapes the strokes draw), masked so
+// the picture shows only inside the figure. Opacity is driven by motion.js:
+// it fades in once the draw finishes, then cross-fades into the full reveal.
+// Absolute within the (sticky) figure so it scrolls away cleanly into Act 3.
+.figure__fill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0; // shown only mid-sequence (and only when JS is animating)
+  @include water-photo;
+
+  $mask: url('/eighty-mask.svg') center / var(--art-w) auto no-repeat;
+  -webkit-mask: $mask;
+  mask: $mask;
+}
+
 .figure__art {
   position: relative;
-  width: min(97vw, #{96 * $art-aspect}svh); // contain (full width or height)
+  z-index: 1;
+  width: var(--art-w); // contain (full width or height)
 }
 
 .figure__mark {
@@ -142,7 +233,7 @@ $art-aspect: 1.5397; // 1512 / 982
 
   .stroke {
     fill: none;
-    stroke: $cedar;
+    stroke: $linen;
     // 5px in the 1512-unit viewBox; scales with the art, matching both frames
     stroke-width: 5;
   }
@@ -158,7 +249,9 @@ $art-aspect: 1.5397; // 1512 / 982
   font-weight: 400;
   font-size: clamp(14px, 1.15vw, 18px);
   line-height: 1.45;
-  color: $cedar;
+  color: $linen;
+  // Keep the copy legible where it crosses brighter water in the reveal
+  text-shadow: 0 1px 24px rgba($carbon, 0.7);
 
   p + p {
     margin-top: 1em;
@@ -171,28 +264,30 @@ $art-aspect: 1.5397; // 1512 / 982
 }
 
 @include desktop {
-  // Lower-right notch of the 80° (Figma: x1080 / y601). The top margin keeps
-  // it off-screen through the draw; the spacer is tuned so the figure unpins
-  // exactly as the blurb reaches the notch — so it docks there and they then
-  // scroll on together (no scrolling further up over the 80°).
+  // The blurb scrolls up the right side as the fill appears; the tall spacer
+  // gives the figure enough pinned scroll for the whole draw → fill → reveal
+  // sequence (see SPAN in motion.js) before it unpins into Act 3.
   .blurb {
     width: min(330px, 26vw);
     margin: 85svh 8.5vw 0 auto;
   }
   .figure-spacer {
-    height: 12svh;
+    height: 145svh;
   }
 }
 
 @include mobile {
   // The 80° bleeds off both edges (clipped by .figure) and sits high so the
-  // blurb has room to dock below it rather than over it.
+  // blurb has room below it rather than over it.
   .figure {
+    --art-w: 124vw;
     align-items: flex-start;
     padding-top: 19svh;
   }
-  .figure__art {
-    width: 124vw;
+  // Match the mask to the top-aligned art: same width, top at the same 19svh.
+  .figure__fill {
+    -webkit-mask-position: 50% 19svh;
+    mask-position: 50% 19svh;
   }
 
   .blurb {
@@ -201,16 +296,43 @@ $art-aspect: 1.5397; // 1512 / 982
     padding: 0 $page-pad;
   }
   .figure-spacer {
-    height: 8svh;
+    height: 125svh;
   }
 }
 
 // ─── Act 3 — keep me in the loop ────────────────────────────────────────
-// Full-height screen: the form sits centred (both axes); footer at the foot.
+// Sits over the revealed water photo: linen ink throughout, with a carbon
+// scrim darkening the picture so the stamp form keeps its contrast.
 .act--signup {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+
+  // Static fallback wash (no JS / reduced motion): a section-scoped scrim over
+  // the picture so the form keeps contrast. When animating, the fixed .bg-scrim
+  // fades in for this instead, so we switch this one off (see .is-animated).
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba($carbon, 0.45),
+      rgba($carbon, 0.7) 45%,
+      rgba($carbon, 0.82)
+    );
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.is-animated .act--signup::before {
+  display: none; // the fixed .bg-scrim handles Act 3 when animating
 }
 
 .signup-inner {
@@ -221,6 +343,51 @@ $art-aspect: 1.5397; // 1512 / 982
   justify-content: center;
   gap: 16px;
   padding: clamp(80px, 14vh, 200px) $page-pad clamp(40px, 8vh, 110px);
+}
+
+// ── Act 3 ink: linen over the dark picture (overrides the cedar baseline) ──
+.act--signup {
+  .stamp__row {
+    border-color: $linen;
+    color: $linen;
+  }
+  .stamp__row--field {
+    &:hover {
+      background: rgba($linen, 0.08);
+    }
+    &:focus-within {
+      background: rgba($linen, 0.14);
+    }
+  }
+  .stamp__field {
+    caret-color: $linen;
+    color: $linen;
+
+    &::placeholder {
+      color: rgba($linen, 0.4);
+    }
+  }
+  .stamp__caret {
+    background: $linen;
+  }
+  .stamp__submit {
+    &:hover,
+    &:focus-visible {
+      background: $linen;
+      color: $carbon;
+    }
+  }
+  .signup-done {
+    border-color: $linen;
+    color: $linen;
+
+    .signup-done__sub {
+      color: rgba($linen, 0.55);
+    }
+  }
+  .form-msg {
+    color: $linen;
+  }
 }
 
 .stamp {
@@ -383,6 +550,7 @@ $art-aspect: 1.5397; // 1512 / 982
   flex: 1 0 auto;
   font-size: clamp(12px, 0.95vw, 15px);
   letter-spacing: 0.12em;
+  color: $linen; // footer lives in Act 3, over the dark picture
 }
 .footer__mark__container {
   flex: 2 0 auto;
@@ -393,6 +561,8 @@ $art-aspect: 1.5397; // 1512 / 982
 .footer__mark {
   width: 116px;
   height: auto;
+  // The cedar wordmark sits over the dark picture here — lift it to linen.
+  filter: brightness(0) invert(1);
 }
 
 .footer__social {
@@ -404,23 +574,23 @@ $art-aspect: 1.5397; // 1512 / 982
   a {
     display: block;
     transition: opacity 0.2s ease;
-    color: $cedar;
+    color: $linen;
     border-radius: 8px;
     padding: 8px;
     transition: background-color 0.2s ease;
   }
 
   a:hover {
-    background-color: $cedar;
+    background-color: $linen;
 
     svg path {
-      stroke: $linen;
+      stroke: $carbon;
     }
   }
 
   svg path {
     transition: stroke 0.2s ease;
-    stroke: $cedar;
+    stroke: $linen;
   }
 
   img,
@@ -458,8 +628,15 @@ $art-aspect: 1.5397; // 1512 / 982
     opacity: 0;
   }
 
+  // The water reveal starts hidden — the video carries Act 2 and motion.js
+  // fades the picture in beneath it once the 80° has filled. (With no JS the
+  // video stays on top throughout, so the static page reads over the sauna loop.)
+  .bg-water {
+    opacity: 0;
+  }
+
   // 80° starts hidden; motion.js sets each stroke's dash-offset from the
-  // scroll position (draws in on the way down, out on the way up).
+  // scroll position (draws in), then fades the strokes out as the water fills.
   .figure__mark .stroke {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
