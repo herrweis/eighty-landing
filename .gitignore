@@ -4,6 +4,12 @@ dist-ssr
 *.local
 .DS_Store
 
+# Environment variables
+.env
+.env.local
+.env.production
+.vercel
+
 # Editor
 .vscode/*
 !.vscode/extensions.json

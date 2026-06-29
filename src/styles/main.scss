@@ -277,26 +277,31 @@ $art-aspect: 1.5397; // 1512 / 982
 }
 
 @include mobile {
-  // The 80° bleeds off both edges (clipped by .figure) and sits high so the
-  // blurb has room below it rather than over it.
+  // Mobile: pin 80° to the top of the viewport
   .figure {
-    --art-w: 124vw;
-    align-items: flex-start;
-    padding-top: 19svh;
+    --art-w: 100vw; // Match viewport width (was 105vw)
+    align-items: flex-start; // Position art at the top
+    padding-top: 2.5vh; // Small padding from absolute top
   }
-  // Match the mask to the top-aligned art: same width, top at the same 19svh.
+
+  // The mask on .figure__fill (position: absolute, inset: 0) must match
+  // where the flex-positioned art actually sits. With align-items: flex-start
+  // and padding-top: 2.5vh, the art starts 2.5vh from the top.
   .figure__fill {
-    -webkit-mask-position: 50% 19svh;
-    mask-position: 50% 19svh;
+    $mask: url('/eighty-mask.svg') center 2.5vh / var(--art-w) auto no-repeat;
+    -webkit-mask: $mask;
+    mask: $mask;
   }
 
   .blurb {
     width: min(86vw, 400px);
-    margin: 48svh auto 0;
+    // Blurb starts off-screen and scrolls up to rest below the 80°
+    margin: 95svh auto 0;
     padding: 0 $page-pad;
   }
+
   .figure-spacer {
-    height: 125svh;
+    height: 80svh;
   }
 }
 

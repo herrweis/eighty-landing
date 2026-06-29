@@ -5,17 +5,35 @@
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
- * Stub for the real subscribe call.
- * TODO: POST { name, email } to the eighty° mailing-list endpoint
- *       (e.g. a serverless function proxying Mailchimp/Klaviyo). Do NOT put
- *       provider API keys in client code.
+ * Submits the signup form to the Vercel serverless function which writes
+ * to Google Sheets. The API credentials are kept server-side for security.
  */
 async function submitSignup(data) {
-  // Simulate a successful round-trip so the success state can be demoed.
-  await new Promise((resolve) => setTimeout(resolve, 350));
-  // eslint-disable-next-line no-console
-  console.log('[eighty°] sign-up (stub):', data);
-  return { ok: true };
+  try {
+    const response = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      // eslint-disable-next-line no-console
+      console.error('[eighty°] sign-up error:', error);
+      return { ok: false, error: error.error || 'Submission failed' };
+    }
+
+    const result = await response.json();
+    // eslint-disable-next-line no-console
+    console.log('[eighty°] sign-up success:', data.email);
+    return result;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('[eighty°] sign-up network error:', error);
+    return { ok: false, error: 'Network error' };
+  }
 }
 
 export function initSignup() {
