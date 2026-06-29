@@ -382,11 +382,11 @@ $art-aspect: 1.5397; // 1512 / 982
       color: $carbon;
     }
   }
-  .signup-done {
+  .signup-done__row {
     border-color: $linen;
     color: $linen;
 
-    .signup-done__sub {
+    &--sub {
       color: rgba($linen, 0.55);
     }
   }
@@ -516,16 +516,22 @@ $art-aspect: 1.5397; // 1512 / 982
   font-family: $font-mono;
   letter-spacing: 0.08em;
   line-height: 1.4;
-  border: 2px solid $cedar;
-  padding: clamp(20px, 2.6vw, 34px) clamp(18px, 2.2vw, 30px);
   transform: rotate(-1.5deg);
   font-size: clamp(21px, 3.4vw, 38px);
+  display: flex;
+  flex-direction: column;
+}
 
-  span {
-    display: block;
+.signup-done__row {
+  display: block;
+  padding: clamp(20px, 2.6vw, 34px) clamp(18px, 2.2vw, 30px);
+  border: 2px solid $cedar;
+
+  &:not(:first-child) {
+    margin-top: -2px; // collapse shared borders
   }
 
-  .signup-done__sub {
+  &--sub {
     color: rgba($cedar, 0.55);
   }
 }

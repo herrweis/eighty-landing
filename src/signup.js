@@ -96,8 +96,8 @@ export function initSignup() {
     done.className = 'signup-done';
     done.setAttribute('role', 'status');
     done.innerHTML =
-      `<span>You're on the list.</span>` +
-      `<span class="signup-done__sub">For ${escapeHtml(firstName)}.</span>`;
+      `<span class="signup-done__row">You are on the list.</span>` +
+      `<span class="signup-done__row signup-done__row--sub">For ${escapeHtml(firstName)}.</span>`;
     form.replaceWith(done);
     clearError();
     done.focus?.();
