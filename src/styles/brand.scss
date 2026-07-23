@@ -1,0 +1,227 @@
+@use 'variables' as *;
+@use 'fonts';
+@use 'reset';
+
+// ═══════════════════════════════════════════════════════════════════════
+//  eighty° — /brand asset sheet
+//  A reference page for print and signage suppliers: the brand, and the
+//  approved files to download. Spec-sheet layout — mono label left,
+//  content right — collapsing to a single stacked column on mobile.
+// ═══════════════════════════════════════════════════════════════════════
+
+.brand {
+  background-color: $linen;
+  color: $carbon;
+  font-family: $font-display;
+}
+
+.sheet {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(48px, 8vw, 120px) $page-pad 0;
+}
+
+// ─── The spec-sheet row ─────────────────────────────────────────────────
+// The hairline sits on top of each row so the sections read as one table.
+.row {
+  display: grid;
+  gap: clamp(16px, 2.5vw, 40px);
+  padding: clamp(28px, 4vw, 56px) 0;
+  border-top: 1px solid rgba($carbon, 0.14);
+
+  @include desktop {
+    grid-template-columns: minmax(120px, 16%) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  &:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+}
+
+.row__label {
+  margin: 0;
+  font-family: $font-mono;
+  font-weight: 400;
+  font-size: clamp(11px, 0.9vw, 13px);
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: rgba($carbon, 1);
+}
+
+.row__body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vw, 36px);
+  max-width: 62ch;
+}
+
+// ─── Running text ───────────────────────────────────────────────────────
+.prose {
+  font-size: clamp(16px, 1.15vw, 19px);
+  line-height: 1.55;
+  color: $carbon;
+}
+
+// ─── 1. Wordmark ────────────────────────────────────────────────────────
+.wordmark-lockup {
+  width: min(100%, 520px);
+  height: auto;
+}
+
+// ─── 2. Tagline ─────────────────────────────────────────────────────────
+// Outlined artwork, not live text — a fine-set line, so it sits smaller than
+// the wordmark above it rather than matching its width.
+.tagline-lockup {
+  width: min(100%, 380px);
+  height: auto;
+}
+
+// ─── 4. The mark ────────────────────────────────────────────────────────
+// The demo is a portrait poster — capped so it reads as one object on the
+// sheet rather than a full-bleed image swallowing the section.
+.mark-demo {
+  width: min(100%, 440px);
+  height: auto;
+  box-shadow: 0 0 40px 0 rgba($carbon, 0.14);
+}
+
+// ─── 5. Palette ─────────────────────────────────────────────────────────
+.palette {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(24px, 3vw, 36px);
+}
+
+.swatch {
+  display: grid;
+  gap: 10px;
+
+  @include desktop {
+    // chip | role + spec — the chip column stays a constant width so the
+    // five colours line up as a single vertical band.
+    grid-template-columns: 96px minmax(0, 1fr);
+    column-gap: clamp(20px, 2.5vw, 32px);
+    align-items: start;
+  }
+}
+
+.swatch__chip {
+  display: block;
+  width: 96px;
+  height: 96px;
+  // Linen on Linen needs an edge to be legible; the hairline is uniform
+  // across all five so no single swatch reads as special-cased.
+  border: 1px solid rgba($carbon, 0.16);
+
+  &--linen {
+    background-color: $linen;
+  }
+  &--cedar {
+    background-color: $cedar;
+  }
+  &--pine {
+    background-color: $pine;
+  }
+  &--plunge {
+    background-color: $plunge;
+  }
+  &--carbon {
+    background-color: $carbon;
+  }
+
+  @include desktop {
+    grid-row: span 2;
+  }
+}
+
+.swatch__role {
+  font-size: clamp(15px, 1.05vw, 17px);
+  line-height: 1.5;
+  color: rgba($carbon, 0.72);
+}
+
+.swatch__spec {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px clamp(14px, 2vw, 28px);
+  font-family: $font-mono;
+  font-size: clamp(12px, 0.95vw, 14px);
+  letter-spacing: 0.1em;
+  color: $carbon;
+}
+
+.swatch__name {
+  text-transform: uppercase;
+  letter-spacing: 0.19em;
+}
+
+.swatch__hex,
+.swatch__cmyk {
+  color: rgba($carbon, 0.6);
+}
+
+.palette__note {
+  font-family: $font-mono;
+  font-size: clamp(11px, 0.9vw, 13px);
+  letter-spacing: 0.1em;
+  color: rgba($carbon, 0.5);
+}
+
+// ─── 7. Downloads ───────────────────────────────────────────────────────
+.downloads {
+  display: grid;
+  gap: 10px;
+}
+
+.downloads__group {
+  margin: 0 0 0 0;
+  font-family: $font-mono;
+  font-weight: 500;
+  font-size: clamp(12px, 1vw, 16px);
+  letter-spacing: 0;
+  color: rgba($carbon, 1);
+}
+
+.files {
+  list-style: none;
+  margin: 0 0 40px 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.file {
+  font-family: $font-mono;
+  font-size: clamp(13px, 1vw, 15px);
+  letter-spacing: 0.04em;
+  color: $carbon;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba($carbon, 0.32);
+  transition: text-decoration-color 0.18s ease;
+
+  &:hover {
+    text-decoration-color: $carbon;
+  }
+}
+
+// ─── Footer ─────────────────────────────────────────────────────────────
+.sheet__footer {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(28px, 4vw, 56px) $page-pad clamp(48px, 7vw, 96px);
+  border-top: 1px solid rgba($carbon, 0.14);
+
+  .prose {
+    font-size: clamp(15px, 1.05vw, 17px);
+    color: rgba($carbon, 0.72);
+  }
+}
+
+:focus-visible {
+  outline-color: $carbon;
+}
