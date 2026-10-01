@@ -146,8 +146,15 @@ function setupAnchors(reduced) {
       if (!target) return;
       e.preventDefault();
       target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
-      target.setAttribute('tabindex', '-1');
-      target.focus({ preventScroll: true });
+      // Land in the first field if the section has one (e.g. the sign-up
+      // form), so visitors can type straight away; otherwise focus the section.
+      const field = target.querySelector('input:not([type="hidden"]), textarea, select');
+      if (field) {
+        field.focus({ preventScroll: true });
+      } else {
+        target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+      }
     });
   });
 }

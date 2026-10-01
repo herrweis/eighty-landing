@@ -102,10 +102,11 @@ main {
 // ─── Act 1 — hero ───────────────────────────────────────────────────────
 .act--hero {
   min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  // Equal top/bottom tracks keep the wordmark block centred on the page;
+  // the bottom track holds the CTA (centred in its free space) and the cue.
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  justify-items: center;
 }
 
 .topbar {
@@ -124,11 +125,12 @@ main {
 }
 
 .hero__center {
+  grid-row: 2;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(14px, 1.8vw, 22px);
+  gap: clamp(20px, 2.5vw, 32px);
 }
 
 .wordmark img {
@@ -142,11 +144,59 @@ main {
   color: rgba($carbon, 1);
 }
 
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  font-family: $font-mono;
+  font-size: clamp(15px, 1.2vw, 17px);
+  letter-spacing: 0.08em;
+  color: $carbon;
+  // background: $carbon;
+  border-radius: 2px;
+  border: 2px solid $carbon;
+  text-decoration: none;
+  transform: rotate(-1.5deg);
+  transition: all 0.25s ease;
+  cursor: pointer;
+
+  .arrow {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  &:hover,
+  &:focus-visible {
+    // Same washes as the sign-up fields (hover / focus-within)
+    background: rgba($carbon, 1);
+    color: $linen;
+    transform: rotate(-1.5deg) translateY(-2px);
+  }
+
+  &:active {
+    background: rgba($linen, 0.14);
+    transform: rotate(-1.5deg) translateY(0);
+  }
+}
+
+.hero__lower {
+  grid-row: 3;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero__cta-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 24px 0;
+}
+
 .hero__cue {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: clamp(28px, 6vh, 58px);
+  padding-bottom: clamp(28px, 6vh, 58px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -624,7 +674,8 @@ $art-aspect: 1.5397; // 1512 / 982
 // ═══════════════════════════════════════════════════════════════════════
 .is-animated {
   // Hero settles in on load (entrance only — not tied to scroll)
-  .hero__center {
+  .hero__center,
+  .hero__cta-wrap {
     opacity: 0;
     animation: rise-in 1s 0.15s ease forwards;
   }

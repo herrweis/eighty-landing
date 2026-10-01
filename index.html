@@ -143,7 +143,7 @@
     </script>
   </head>
   <body>
-    <a class="skip-link" href="#signup">Skip to sign-up</a>
+    <a class="skip-link" href="#loop">Skip to sign-up</a>
 
     <!-- Fixed background layers behind every act (painted back → front):
          the water photo, a dark wash for Act 3, and the sauna video on top.
@@ -180,10 +180,19 @@
           </h1>
           <p class="label hero__opening">Opening 2026</p>
         </div>
-        <p class="hero__cue">
-          <span class="label">a place to recover.</span>
-          <span class="arrow" aria-hidden="true">↓</span>
-        </p>
+        <!-- Lower half: CTA centred in the space between "Opening" and the cue -->
+        <div class="hero__lower">
+          <div class="hero__cta-wrap">
+            <a href="#loop" class="hero__cta">
+              <span>Keep me in the loop</span>
+              <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+          <p class="hero__cue">
+            <span class="label">a place to recover.</span>
+            <span class="arrow" aria-hidden="true">↓</span>
+          </p>
+        </div>
       </section>
 
       <!-- Act 2 — the 80° draws in, then sits in place (sticky) while the
@@ -226,7 +235,7 @@
       </section>
 
       <!-- Act 3 — keep me in the loop (full-height; form centred) -->
-      <section class="act act--signup" id="signup" aria-labelledby="signup-heading">
+      <section class="act act--signup" id="loop" aria-labelledby="signup-heading">
         <div class="signup-inner">
           <form class="stamp" novalidate data-form>
             <h2 class="stamp__row stamp__head" id="signup-heading">Keep me in the loop</h2>
