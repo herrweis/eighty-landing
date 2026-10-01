@@ -138,6 +138,30 @@ function clamp(n, min, max) {
   return n < min ? min : n > max ? max : n;
 }
 
+// On phones the keyboard opens over the bottom half of the screen, which can
+// hide a vertically-centred form. preventScroll stops iOS from fixing that
+// itself, so once the visual viewport shrinks (keyboard up), scroll the form
+// to just under the top edge. Gives up after a moment if no keyboard appears.
+const KEYBOARD_GAP = 16;
+
+function liftAboveKeyboard(el, reduced) {
+  const vv = window.visualViewport;
+  if (!vv) return;
+
+  const onResize = () => {
+    if (vv.height > window.innerHeight * 0.8) return; // not the keyboard
+    stop();
+    const top = window.scrollY + el.getBoundingClientRect().top - KEYBOARD_GAP;
+    window.scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
+  };
+  const stop = () => {
+    vv.removeEventListener('resize', onResize);
+    clearTimeout(timer);
+  };
+  const timer = setTimeout(stop, 1500);
+  vv.addEventListener('resize', onResize);
+}
+
 function setupAnchors(reduced) {
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
@@ -151,6 +175,7 @@ function setupAnchors(reduced) {
       const field = target.querySelector('input:not([type="hidden"]), textarea, select');
       if (field) {
         field.focus({ preventScroll: true });
+        liftAboveKeyboard(field.closest('form') || field, reduced);
       } else {
         target.setAttribute('tabindex', '-1');
         target.focus({ preventScroll: true });
