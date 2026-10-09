@@ -15,6 +15,67 @@
   font-family: $font-display;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+// ─── In-page navigation ─────────────────────────────────────────────────
+// Pinned to the top in the row-label voice. Stays on one line; on narrow
+// screens the list scrolls sideways instead of wrapping. brand.js marks
+// the section in view with aria-current.
+.toc {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: $linen;
+  border-bottom: 1px solid rgba($carbon, 0.14);
+}
+
+.toc__list {
+  position: relative; // offset parent for centring the active link
+  display: flex;
+  gap: clamp(20px, 2.5vw, 36px);
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 $page-pad;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  a {
+    display: block;
+    padding: 16px 0;
+    line-height: 17px; // fixed bar height (50px with the border) at any size
+    font-family: $font-mono;
+    font-size: clamp(11px, 0.9vw, 13px);
+    letter-spacing: 0.19em;
+    text-transform: lowercase;
+    white-space: nowrap;
+    color: rgba($carbon, 0.5);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 6px;
+    transition:
+      color 0.18s ease,
+      text-decoration-color 0.18s ease;
+
+    &:hover {
+      color: $carbon;
+    }
+
+    &[aria-current] {
+      color: $carbon;
+      text-decoration-color: $carbon;
+    }
+  }
+}
+
 .sheet {
   max-width: 1180px;
   margin: 0 auto;
@@ -28,6 +89,7 @@
   gap: clamp(16px, 2.5vw, 40px);
   padding: clamp(28px, 4vw, 56px) 0;
   border-top: 1px solid rgba($carbon, 0.14);
+  scroll-margin-top: 49px; // land under the pinned .toc; its border hides ours
 
   @include desktop {
     grid-template-columns: minmax(120px, 16%) minmax(0, 1fr);
@@ -37,6 +99,8 @@
   &:first-child {
     border-top: 0;
     padding-top: 0;
+    // No padding of its own: jumping here returns to the very top instead.
+    scroll-margin-top: calc(50px + clamp(48px, 8vw, 120px));
   }
 }
 
@@ -46,7 +110,7 @@
   font-weight: 400;
   font-size: clamp(11px, 0.9vw, 13px);
   letter-spacing: 0.19em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: rgba($carbon, 1);
 }
 
@@ -88,7 +152,8 @@
 }
 
 // ─── 5. Palette ─────────────────────────────────────────────────────────
-.palette {
+.palette,
+.specimens {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -144,7 +209,8 @@
   color: rgba($carbon, 0.72);
 }
 
-.swatch__spec {
+.swatch__spec,
+.specimen__spec {
   display: flex;
   flex-wrap: wrap;
   gap: 4px clamp(14px, 2vw, 28px);
@@ -160,7 +226,8 @@
 }
 
 .swatch__hex,
-.swatch__cmyk {
+.swatch__cmyk,
+.specimen__weight {
   color: rgba($carbon, 0.6);
 }
 
@@ -169,6 +236,99 @@
   font-size: clamp(11px, 0.9vw, 13px);
   letter-spacing: 0.1em;
   color: rgba($carbon, 0.5);
+}
+
+// ─── Typography specimens ───────────────────────────────────────────────
+// A sub-heading, then the sample set large in its own face inside a box
+// framed like the logo previews, with the spec line as a strip attached
+// below it.
+.specimen {
+  display: grid;
+
+  // The typeface's own heading, a step up from the sub-headings inside it
+  // so each typeface reads as its own block.
+  > .downloads__group {
+    margin-bottom: 16px;
+    font-size: clamp(18px, 1.6vw, 24px);
+  }
+}
+
+// More air between the typefaces than between the palette swatches.
+.specimens {
+  gap: clamp(40px, 5vw, 64px);
+}
+
+// One block per typeface: specimen, notes and its download, spaced like the
+// row body. The last file list closes the block, so it drops its own margin.
+.typeface {
+  display: grid;
+  gap: clamp(20px, 3vw, 36px);
+
+  .files {
+    margin-bottom: 0;
+  }
+}
+
+// Font names read as plain text in the running-text face, as one line
+// with a word space between name and weight.
+.specimen__spec {
+  display: block;
+  padding: 12px clamp(24px, 3vw, 40px);
+  border: 1px solid rgba($carbon, 0.16);
+  border-top: 0;
+  font-family: $font-display;
+  font-size: clamp(15px, 1.1vw, 17px);
+  letter-spacing: 0;
+}
+
+.specimen__sample {
+  margin: 0;
+  padding: clamp(24px, 3vw, 40px);
+  border: 1px solid rgba($carbon, 0.16);
+  font-size: clamp(26px, 2.6vw, 40px);
+  line-height: 1.2;
+  color: $carbon;
+
+  &--inria {
+    font-family: $font-display;
+    font-weight: 400;
+  }
+  // Headline in Regular over a body line in Light, as on the poster.
+  &-line {
+    margin-top: 8px;
+    font-size: clamp(16px, 1.15vw, 19px);
+    line-height: 1.4;
+    font-weight: 300;
+  }
+
+  &--mono {
+    font-family: $font-mono;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+  }
+}
+
+// ─── Sub-sections ───────────────────────────────────────────────────────
+// A sub-heading and its paragraphs inside a row body, kept tighter than the
+// gap between the row's own blocks.
+.subsection {
+  display: grid;
+  gap: clamp(12px, 1.5vw, 18px);
+}
+
+// A short list of rules in running text, one point per line.
+.rules {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+// Keys named in running text, in the label face.
+kbd {
+  font-family: $font-mono;
+  font-size: 0.85em;
+  letter-spacing: 0.04em;
 }
 
 // ─── 6. Logo previews ───────────────────────────────────────────────────
@@ -229,7 +389,7 @@
 .downloads__group {
   margin: 0 0 0 0;
   font-family: $font-mono;
-  font-weight: 500;
+  font-weight: 600;
   font-size: clamp(12px, 1vw, 16px);
   letter-spacing: 0;
   color: rgba($carbon, 1);
@@ -255,6 +415,13 @@
 
   &:hover {
     text-decoration-color: $carbon;
+  }
+
+  // A link on words inside running text: keeps the sentence's own face.
+  &--inline {
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
   }
 }
 

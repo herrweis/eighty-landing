@@ -14,16 +14,33 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- Adobe Fonts: Nitti (labels) and Inria Sans (running text) -->
-    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
-    <link rel="preconnect" href="https://p.typekit.net" crossorigin />
-    <link rel="stylesheet" href="https://use.typekit.net/xjk7hhl.css" />
+    <!-- Google Fonts: Inria Sans (running text). iA Writer Mono is self-hosted. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@300;400&display=swap"
+    />
   </head>
 
   <body class="brand">
+    <!-- Sticky in-page navigation; brand.js marks the section in view -->
+    <nav class="toc" aria-label="Sections">
+      <ul class="toc__list">
+        <li><a href="#wordmark">Wordmark</a></li>
+        <li><a href="#tagline">Tagline</a></li>
+        <li><a href="#the-name">The name</a></li>
+        <li><a href="#palette">Palette</a></li>
+        <li><a href="#typography">Typography</a></li>
+        <li><a href="#size-and-space">Size and space</a></li>
+        <li><a href="#the-mark">The mark</a></li>
+        <li><a href="#signage">Signage</a></li>
+      </ul>
+    </nav>
+
     <main class="sheet">
       <!-- ─── Wordmark ─────────────────────────────────────────────── -->
-      <section class="row">
+      <section class="row" id="wordmark">
         <h2 class="row__label">Wordmark</h2>
         <div class="row__body">
           <img
@@ -33,112 +50,7 @@
             width="1592"
             height="372"
           />
-        </div>
-      </section>
 
-      <!-- ─── Tagline ──────────────────────────────────────────────── -->
-      <section class="row">
-        <h2 class="row__label">Tagline</h2>
-        <div class="row__body">
-          <img
-            class="tagline-lockup"
-            src="/brand/tagline.svg"
-            alt="a place to recover."
-            width="267"
-            height="16"
-          />
-        </div>
-      </section>
-
-      <!-- ─── The name ─────────────────────────────────────────────── -->
-      <section class="row">
-        <h2 class="row__label">The name</h2>
-        <div class="row__body">
-          <p class="prose">
-            eighty° is written lowercase with the degree symbol attached, capital
-            only when it opens a sentence. Always written as eighty°, never
-            spelled out as Eighty Degrees Recovery and Wellness Centre.
-          </p>
-        </div>
-      </section>
-
-      <!-- ─── Palette ──────────────────────────────────────────────── -->
-      <section class="row">
-        <h2 class="row__label">Palette</h2>
-        <div class="row__body">
-          <ul class="palette">
-            <li class="swatch">
-              <span class="swatch__chip swatch__chip--linen" aria-hidden="true"></span>
-              <p class="swatch__role">Universal canvas.</p>
-              <p class="swatch__spec">
-                <span class="swatch__name">Linen</span>
-                <span class="swatch__hex">#F4EFE1</span>
-                <span class="swatch__cmyk">C2 M3 Y10 K0</span>
-              </p>
-            </li>
-
-            <li class="swatch">
-              <span class="swatch__chip swatch__chip--cedar" aria-hidden="true"></span>
-              <p class="swatch__role">
-                Parent and considered.
-              </p>
-              <p class="swatch__spec">
-                <span class="swatch__name">Cedar</span>
-                <span class="swatch__hex">#766044</span>
-                <span class="swatch__cmyk">C0 M19 Y42 K54</span>
-              </p>
-            </li>
-
-            <li class="swatch">
-              <span class="swatch__chip swatch__chip--pine" aria-hidden="true"></span>
-              <p class="swatch__role">Social.</p>
-              <p class="swatch__spec">
-                <span class="swatch__name">Pine</span>
-                <span class="swatch__hex">#3E7A66</span>
-                <span class="swatch__cmyk">C49 M0 Y16 K52</span>
-              </p>
-            </li>
-
-            <li class="swatch">
-              <span class="swatch__chip swatch__chip--plunge" aria-hidden="true"></span>
-              <p class="swatch__role">Sports.</p>
-              <p class="swatch__spec">
-                <span class="swatch__name">Plunge</span>
-                <span class="swatch__hex">#1C658A</span>
-                <span class="swatch__cmyk">C80 M27 Y0 K46</span>
-              </p>
-            </li>
-
-            <li class="swatch">
-              <span class="swatch__chip swatch__chip--carbon" aria-hidden="true"></span>
-              <p class="swatch__role">Structural allrounder.</p>
-              <p class="swatch__spec">
-                <span class="swatch__name">Carbon</span>
-                <span class="swatch__hex">#1E1C1A</span>
-                <span class="swatch__cmyk">C0 M7 Y13 K88</span>
-              </p>
-            </li>
-          </ul>
-          <p class="palette__note">CMYK values are approximate conversions.</p>
-        </div>
-      </section>
-
-      <!-- ─── Size and space ───────────────────────────────────────── -->
-      <section class="row">
-        <h2 class="row__label">Size and space</h2>
-        <div class="row__body">
-          <p class="prose">
-            Keep clear space around the wordmark of at least the height of the
-            &ldquo;e&rdquo;. Do not set the wordmark smaller than 16px on screen
-            or 12mm in print. Do not stretch, recolour or add effects.
-          </p>
-        </div>
-      </section>
-
-      <!-- ─── Wordmark ─────────────────────────────────────────────── -->
-      <section class="row">
-        <h2 class="row__label">Wordmark</h2>
-        <div class="row__body">
           <p class="prose">
             The eighty° wordmark is the primary logo for all digital, print, and
             marketing applications. Available in Carbon (dark on light), Cedar
@@ -268,8 +180,342 @@
         </div>
       </section>
 
+      <!-- ─── Tagline ──────────────────────────────────────────────── -->
+      <section class="row" id="tagline">
+        <h2 class="row__label">Tagline</h2>
+        <div class="row__body">
+          <img
+            class="tagline-lockup"
+            src="/brand/tagline.svg"
+            alt="a place to recover."
+            width="267"
+            height="16"
+          />
+
+          <p class="prose">
+            Available in Carbon (dark on light), Cedar (warm mid-tone), and Linen
+            (light on dark).
+          </p>
+
+          <div class="logo-preview">
+            <div class="logo-preview__item">
+              <div class="logo-preview__swatch logo-preview__swatch--light">
+                <img
+                  src="/brand/eightydegrees-tagline-carbon.svg"
+                  alt="Tagline in Carbon"
+                  width="267"
+                />
+              </div>
+              <p class="logo-preview__label">Carbon</p>
+            </div>
+            <div class="logo-preview__item">
+              <div class="logo-preview__swatch logo-preview__swatch--light">
+                <img
+                  src="/brand/eightydegrees-tagline-cedar.svg"
+                  alt="Tagline in Cedar"
+                  width="267"
+                />
+              </div>
+              <p class="logo-preview__label">Cedar</p>
+            </div>
+            <div class="logo-preview__item">
+              <div class="logo-preview__swatch logo-preview__swatch--dark">
+                <img
+                  src="/brand/eightydegrees-tagline-linen.svg"
+                  alt="Tagline in Linen"
+                  width="267"
+                />
+              </div>
+              <p class="logo-preview__label">Linen</p>
+            </div>
+          </div>
+
+          <div class="downloads">
+            <h3 class="downloads__group">
+              Vector (for signage, large format, anything scaled)
+            </h3>
+            <ul class="files">
+              <li>
+                <a
+                  class="file"
+                  href="/brand/eightydegrees-tagline-carbon.svg"
+                  download
+                  >eightydegrees-tagline-carbon.svg</a
+                >
+              </li>
+              <li>
+                <a
+                  class="file"
+                  href="/brand/eightydegrees-tagline-cedar.svg"
+                  download
+                  >eightydegrees-tagline-cedar.svg</a
+                >
+              </li>
+              <li>
+                <a
+                  class="file"
+                  href="/brand/eightydegrees-tagline-linen.svg"
+                  download
+                  >eightydegrees-tagline-linen.svg</a
+                >
+              </li>
+            </ul>
+
+            <h3 class="downloads__group">Print, CMYK (press-ready)</h3>
+            <ul class="files">
+              <li>
+                <a
+                  class="file"
+                  href="/brand/eightydegrees-tagline-carbon.pdf"
+                  download
+                  >eightydegrees-tagline-carbon.pdf</a
+                >
+              </li>
+              <li>
+                <a
+                  class="file"
+                  href="/brand/eightydegrees-tagline-cedar.pdf"
+                  download
+                  >eightydegrees-tagline-cedar.pdf</a
+                >
+              </li>
+              <li>
+                <a
+                  class="file"
+                  href="/brand/eightydegrees-tagline-linen.pdf"
+                  download
+                  >eightydegrees-tagline-linen.pdf</a
+                >
+              </li>
+            </ul>
+
+            <h3 class="downloads__group">Image, PNG (screen, quick placement)</h3>
+            <ul class="files">
+              <li>
+                <a
+                  class="file"
+                  href="/brand/eightydegrees-tagline-carbon.png"
+                  download
+                  >eightydegrees-tagline-carbon.png</a
+                >
+              </li>
+              <li>
+                <a
+                  class="file"
+                  href="/brand/eightydegrees-tagline-cedar.png"
+                  download
+                  >eightydegrees-tagline-cedar.png</a
+                >
+              </li>
+              <li>
+                <a
+                  class="file"
+                  href="/brand/eightydegrees-tagline-linen.png"
+                  download
+                  >eightydegrees-tagline-linen.png</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── The name ─────────────────────────────────────────────── -->
+      <section class="row" id="the-name">
+        <h2 class="row__label">The name</h2>
+        <div class="row__body">
+          <p class="prose">
+            eighty° is written lowercase with the degree symbol attached, capital
+            only when it opens a sentence. Always written as eighty°, never
+            spelled out as Eighty Degrees Recovery and Wellness Centre.
+          </p>
+
+          <div class="subsection">
+            <h3 class="downloads__group">Typing the °</h3>
+            <p class="prose">
+              Mac: press <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>8</kbd>.
+            </p>
+            <p class="prose">
+              Windows: hold <kbd>Alt</kbd> and type <kbd>0176</kbd> on the number
+              pad. On a laptop without one, press <kbd>Windows</kbd> +
+              <kbd>.</kbd> (full stop) to open the symbol panel and pick ° from
+              the symbols tab.
+            </p>
+            <p class="prose">
+              It is the degree sign. The look-alike º (<kbd>Option</kbd> +
+              <kbd>0</kbd> on a Mac) is a different character and will show up
+              wrong in some fonts.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Palette ──────────────────────────────────────────────── -->
+      <section class="row" id="palette">
+        <h2 class="row__label">Palette</h2>
+        <div class="row__body">
+          <ul class="palette">
+            <li class="swatch">
+              <span class="swatch__chip swatch__chip--linen" aria-hidden="true"></span>
+              <p class="swatch__role">Universal canvas.</p>
+              <p class="swatch__spec">
+                <span class="swatch__name">Linen</span>
+                <span class="swatch__hex">#F4EFE1</span>
+                <span class="swatch__cmyk">C2 M3 Y10 K0</span>
+              </p>
+            </li>
+
+            <li class="swatch">
+              <span class="swatch__chip swatch__chip--cedar" aria-hidden="true"></span>
+              <p class="swatch__role">
+                Parent and considered.
+              </p>
+              <p class="swatch__spec">
+                <span class="swatch__name">Cedar</span>
+                <span class="swatch__hex">#766044</span>
+                <span class="swatch__cmyk">C0 M19 Y42 K54</span>
+              </p>
+            </li>
+
+            <li class="swatch">
+              <span class="swatch__chip swatch__chip--pine" aria-hidden="true"></span>
+              <p class="swatch__role">Social.</p>
+              <p class="swatch__spec">
+                <span class="swatch__name">Pine</span>
+                <span class="swatch__hex">#3E7A66</span>
+                <span class="swatch__cmyk">C49 M0 Y16 K52</span>
+              </p>
+            </li>
+
+            <li class="swatch">
+              <span class="swatch__chip swatch__chip--plunge" aria-hidden="true"></span>
+              <p class="swatch__role">Sports.</p>
+              <p class="swatch__spec">
+                <span class="swatch__name">Plunge</span>
+                <span class="swatch__hex">#1C658A</span>
+                <span class="swatch__cmyk">C80 M27 Y0 K46</span>
+              </p>
+            </li>
+
+            <li class="swatch">
+              <span class="swatch__chip swatch__chip--carbon" aria-hidden="true"></span>
+              <p class="swatch__role">Structural allrounder.</p>
+              <p class="swatch__spec">
+                <span class="swatch__name">Carbon</span>
+                <span class="swatch__hex">#1E1C1A</span>
+                <span class="swatch__cmyk">C0 M7 Y13 K88</span>
+              </p>
+            </li>
+          </ul>
+          <p class="palette__note">CMYK values are approximate conversions.</p>
+        </div>
+      </section>
+
+      <!-- ─── Typography ───────────────────────────────────────────── -->
+      <section class="row" id="typography">
+        <h2 class="row__label">Typography</h2>
+        <div class="row__body">
+          <ul class="specimens">
+            <!-- Inria Sans: specimen, then where to get it -->
+            <li class="typeface">
+              <div class="specimen">
+                <h3 class="downloads__group">Body copy</h3>
+                <div class="specimen__sample specimen__sample--inria">
+                  <p>Find your ritual</p>
+                  <p class="specimen__sample-line">
+                    Recovery, sauna and contrast therapy in Bendigo.
+                  </p>
+                </div>
+                <p class="specimen__spec">
+                  <span class="specimen__name">Inria Sans</span>
+                  <span class="specimen__weight">Regular and Light</span>
+                </p>
+              </div>
+
+              <div class="downloads">
+                <h3 class="downloads__group">Download</h3>
+                <ul class="files">
+                  <li>
+                    <a
+                      class="file"
+                      href="https://fonts.google.com/specimen/Inria+Sans"
+                      target="_blank"
+                      rel="noopener"
+                      >Inria Sans on Google Fonts</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- iA Writer Mono: specimen, licence, download, which file -->
+            <li class="typeface">
+              <div class="specimen">
+                <h3 class="downloads__group">Signage and labels</h3>
+                <p class="specimen__sample specimen__sample--mono">
+                  infrared sauna
+                </p>
+                <p class="specimen__spec">
+                  <span class="specimen__name">iA Writer Mono</span>
+                  <span class="specimen__weight">Regular</span>
+                </p>
+              </div>
+
+              <p class="prose">
+                iA Writer Mono is made by iA, the makers of the iA Writer app, and
+                is based on IBM Plex. It is free to use under the SIL Open Font
+                License. The original is on
+                <a
+                  class="file file--inline"
+                  href="https://github.com/iaolo/iA-Fonts"
+                  target="_blank"
+                  rel="noopener"
+                  >iA's GitHub</a
+                >.
+              </p>
+
+              <div class="downloads">
+                <h3 class="downloads__group">Download</h3>
+                <ul class="files">
+                  <li>
+                    <a class="file" href="/brand/ia-writer-mono.zip" download
+                      >ia-writer-mono.zip</a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <div class="subsection">
+                <h3 class="downloads__group">Which file do I need?</h3>
+                <p class="prose">
+                  Install iAWriterMonoS-Regular.ttf. This font weight covers
+                  signage, print and social media.
+                </p>
+              </div>
+            </li>
+          </ul>
+
+          <p class="prose">
+            The wordmark and tagline on this page are finished artwork. Anyone can
+            place them without installing a font.
+          </p>
+        </div>
+      </section>
+
+      <!-- ─── Size and space ───────────────────────────────────────── -->
+      <section class="row" id="size-and-space">
+        <h2 class="row__label">Size and space</h2>
+        <div class="row__body">
+          <p class="prose">
+            Keep clear space around the wordmark of at least the height of the
+            &ldquo;e&rdquo;. Do not set the wordmark smaller than 16px on screen
+            or 12mm in print. Do not stretch, recolour or add effects.
+          </p>
+        </div>
+      </section>
+
       <!-- ─── The mark ─────────────────────────────────────────────── -->
-      <section class="row">
+      <section class="row" id="the-mark">
         <h2 class="row__label">The mark</h2>
         <div class="row__body">
           <p class="prose">
@@ -418,6 +664,100 @@
                   >mark-linen-outline.pdf</a
                 >
               </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Signage ──────────────────────────────────────────────── -->
+      <section class="row" id="signage">
+        <h2 class="row__label">Signage</h2>
+        <div class="row__body">
+          <p class="prose">
+            eighty° signage should feel quiet and integrated into the space. It is there to identify, guide and inform, not to fill every available surface.
+          </p>
+          <div class="subsection">
+            <h3 class="downloads__group">The name</h3>
+            <ul class="prose rules">
+              <li>Use the supplied <a class="file file--inline" href="#wordmark">wordmark artwork</a>.</li>
+              <li>Never retype or recreate the name.</li>
+              <li>The ° is part of the wordmark.</li>
+              <li>Avoid repeating the logo within the same view.</li>
+            </ul>
+          </div>
+          <div class="subsection">
+            <h3 class="downloads__group">Typography</h3>
+            <ul class="prose rules">
+              <li>
+                Use <a class="file file--inline" href="#typography">iA Writer Mono Regular</a> for room names,
+                wayfinding and functional information.
+              </li>
+              <li>
+                Lowercase, with wide letter spacing. Use the
+                <a class="file file--inline" href="#tagline">tagline artwork</a> on
+                this page as the visual reference.
+              </li>
+              <li>Keep type small. Smaller type needs a little more spacing, larger type a little less.</li>
+              <li>Left align where practical.</li>
+            </ul>
+          </div>
+          <div class="subsection">
+            <h3 class="downloads__group">Scale</h3>
+            <ul class="prose rules">
+              <li>Err on the smaller side.</li>
+              <li>Signage should feel confident without dominating the architecture.</li>
+              <li>
+                Give the <a class="file file--inline" href="#wordmark">wordmark</a> and
+                <a class="file file--inline" href="#typography">typography</a> plenty of surrounding space.
+              </li>
+            </ul>
+          </div>
+          <div class="subsection">
+            <h3 class="downloads__group">Colour and finish</h3>
+            <ul class="prose rules">
+              <li>Keep applications simple and matte.</li>
+              <li>
+                Use <a class="file file--inline" href="#palette">Carbon</a> on light surfaces and
+                <a class="file file--inline" href="#palette">Linen</a> on dark surfaces wherever possible.
+              </li>
+              <li>Choose materials that work with the interior rather than introduce a new visual language.</li>
+            </ul>
+          </div>
+          <div class="subsection">
+            <h3 class="downloads__group">Glass</h3>
+            <ul class="prose rules">
+              <li>Frosting, vinyl and small typography can all work.</li>
+              <li>Keep information secondary to the overall arrival experience.</li>
+              <li>Avoid covering large areas unless privacy requires it.</li>
+            </ul>
+          </div>
+          <div class="subsection">
+            <h3 class="downloads__group">Room and wayfinding signs</h3>
+            <ul class="prose rules">
+              <li>Keep room identification simple and consistent.</li>
+              <li>Applied lettering, vinyl, stencil or acrylic can all work depending on cost and surface.</li>
+              <li>Resolve final placement and sizing against the actual space with the sign maker.</li>
+            </ul>
+          </div>
+          <div class="subsection">
+            <h3 class="downloads__group">Environmental graphics</h3>
+            <ul class="prose rules">
+              <li>
+                Use one brand element at a time: <a class="file file--inline" href="#wordmark">wordmark</a>,
+                <a class="file file--inline" href="#the-mark">mark</a>, <a class="file file--inline" href="#tagline">slogan</a> or image.
+              </li>
+              <li>Avoid combining several into one application.</li>
+              <li>Leave space. Not every wall needs something on it.</li>
+            </ul>
+          </div>
+          <div class="subsection">
+            <h3 class="downloads__group">Avoid</h3>
+            <ul class="prose rules">
+              <li>Oversized logos.</li>
+              <li>Repeating the brand unnecessarily.</li>
+              <li>Glossy finishes.</li>
+              <li>Outlines, drop shadows or decorative effects.</li>
+              <li>Adding graphics simply to fill space.</li>
             </ul>
           </div>
         </div>

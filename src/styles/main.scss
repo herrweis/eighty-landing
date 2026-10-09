@@ -82,11 +82,13 @@ main {
 }
 
 // ─── Shared label style (Space Mono, spaced) ────────────────────────────
+// iA Writer Mono is taller than Nitti at the same size, so mono text sits a
+// step smaller with wider tracking. 12px floor keeps labels legible on phones.
 .label {
   font-family: $font-mono;
   font-weight: 400;
-  font-size: clamp(12px, 1.05vw, 16px);
-  letter-spacing: 0.19em;
+  font-size: clamp(12px, 0.98vw, 14px);
+  letter-spacing: 0.35em;
   color: $cedar;
 }
 
@@ -118,9 +120,13 @@ main {
   padding: clamp(16px, 3vw, 45px) $page-pad;
 
   .label {
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
+    text-transform: lowercase;
     color: rgba($linen, 1);
+
+    // Both labels share one line; below 375px the full tracking wraps them.
+    @media (max-width: 374px) {
+      letter-spacing: 0.2em;
+    }
   }
 }
 
@@ -140,7 +146,6 @@ main {
 
 .hero__opening {
   text-transform: uppercase;
-  letter-spacing: 0.2em;
   color: rgba($carbon, 1);
 }
 
@@ -150,8 +155,8 @@ main {
   gap: 12px;
   padding: 16px 24px;
   font-family: $font-mono;
-  font-size: clamp(15px, 1.2vw, 17px);
-  letter-spacing: 0.08em;
+  font-size: clamp(14px, 1.13vw, 16px);
+  letter-spacing: 0.12em;
   color: $carbon;
   // background: $carbon;
   border-radius: 2px;
@@ -460,9 +465,9 @@ $art-aspect: 1.5397; // 1512 / 982
   padding: clamp(7px, 0.85vw, 11px) clamp(11px, 1.1vw, 16px);
   border: 2px solid $cedar;
   font-family: $font-mono;
-  font-weight: 300; // Nitti Light, per the Figma form
-  font-size: clamp(21px, 3.5vw, 40px);
-  letter-spacing: 0.08em;
+  font-weight: 400;
+  font-size: clamp(20px, 3.3vw, 38px);
+  letter-spacing: 0.12em;
   line-height: 1.15;
 
   & + & {
@@ -564,10 +569,10 @@ $art-aspect: 1.5397; // 1512 / 982
 .signup-done {
   width: min(92vw, 720px);
   font-family: $font-mono;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   line-height: 1.4;
   transform: rotate(-1.5deg);
-  font-size: clamp(21px, 3.4vw, 38px);
+  font-size: clamp(20px, 3.2vw, 36px);
   display: flex;
   flex-direction: column;
 }
@@ -589,8 +594,8 @@ $art-aspect: 1.5397; // 1512 / 982
 .form-msg {
   margin-top: 16px;
   font-family: $font-mono;
-  font-size: 13px;
-  letter-spacing: 0.06em;
+  font-size: 12px;
+  letter-spacing: 0.12em;
   color: $cedar;
 
   &[hidden] {
@@ -609,8 +614,8 @@ $art-aspect: 1.5397; // 1512 / 982
 
 .footer__email {
   flex: 1 0 auto;
-  font-size: clamp(12px, 0.95vw, 15px);
-  letter-spacing: 0.12em;
+  font-size: clamp(12px, 0.89vw, 14px);
+  letter-spacing: 0.17em;
   color: $linen; // footer lives in Act 3, over the dark picture
 }
 .footer__mark__container {
