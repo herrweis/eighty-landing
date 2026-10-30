@@ -1,38 +1,68 @@
 // ─── Sign-up form ───────────────────────────────────────────────────────
-// Client-side validation only. The submit is stubbed — no provider is wired
-// up and no secrets are committed.
+// Posts leads straight to Momence — the same public endpoint their lead-form
+// plugin uses, with our own markup instead of their embed. The host id and
+// token are public (they ship in Momence's embed code), so no proxy needed.
+// For now every sign-up is also copied to the Google Sheet (/api/subscribe)
+// as a backup while the Momence side is bedded in.
+
+const MOMENCE = {
+  endpoint: 'https://api.momence.com/integrations/customer-leads/330703/collect',
+  token: 'Z37WJQ4Lja',
+  sourceId: 287786, // Lead source: "Foundation Members"
+  // Custom lead field (Settings → Custom lead fields, type Text) that records
+  // the marketing opt-in on each lead.
+  consentField: 'marketingConsent',
+};
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
- * Submits the signup form to the Vercel serverless function which writes
- * to Google Sheets. The API credentials are kept server-side for security.
+ * Creates the lead in Momence. Resolves { ok, fieldErrors? } — Momence
+ * answers 400 with per-field errors, anything else non-200 is a hard failure.
  */
-async function submitSignup(data) {
+async function submitLead(fields) {
   try {
-    const response = await fetch('/api/subscribe', {
+    const response = await fetch(MOMENCE.endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-      body: JSON.stringify(data),
+      credentials: 'omit',
+      body: JSON.stringify({ ...fields, token: MOMENCE.token, sourceId: MOMENCE.sourceId }),
     });
 
-    if (!response.ok) {
-      const error = await response.json();
-      // eslint-disable-next-line no-console
-      console.error('[eighty°] sign-up error:', error);
-      return { ok: false, error: error.error || 'Submission failed' };
-    }
+    const result = await response.json().catch(() => ({}));
+    if (response.ok && result.status === 'success') return { ok: true };
 
-    const result = await response.json();
     // eslint-disable-next-line no-console
-    console.log('[eighty°] sign-up success:', data.email);
-    return result;
+    console.error('[eighty°] sign-up error:', response.status, result);
+    return { ok: false, fieldErrors: response.status === 400 ? result.error : null };
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('[eighty°] sign-up network error:', error);
-    return { ok: false, error: 'Network error' };
+    return { ok: false };
+  }
+}
+
+/** Backup copy to the Google Sheet via the Vercel function. */
+async function submitToSheet(data) {
+  try {
+    const response = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (response.ok) return { ok: true };
+
+    const error = await response.json().catch(() => ({}));
+    // eslint-disable-next-line no-console
+    console.error('[eighty°] sheet error:', response.status, error);
+    return { ok: false };
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('[eighty°] sheet network error:', error);
+    return { ok: false };
   }
 }
 
@@ -41,8 +71,12 @@ export function initSignup() {
   const errorEl = document.querySelector('[data-form-error]');
   if (!form) return;
 
-  const nameEl = form.querySelector('#name');
+  const firstNameEl = form.querySelector('#first-name');
+  const lastNameEl = form.querySelector('#last-name');
   const emailEl = form.querySelector('#email');
+  const honeypotEl = form.querySelector('[name="_website"]');
+  // Momence's bot check reads time-on-form, so we send it the same way
+  const mountedAt = Date.now();
 
   const showError = (message) => {
     if (!errorEl) return;
@@ -58,12 +92,18 @@ export function initSignup() {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const name = nameEl.value.trim();
+    const firstName = firstNameEl.value.trim();
+    const lastName = lastNameEl.value.trim();
     const email = emailEl.value.trim();
 
-    if (!name) {
-      showError('Please add your name.');
-      nameEl.focus();
+    if (!firstName) {
+      showError('Please add your first name.');
+      firstNameEl.focus();
+      return;
+    }
+    if (!lastName) {
+      showError('Please add your last name.');
+      lastNameEl.focus();
       return;
     }
     if (!EMAIL_RE.test(email)) {
@@ -75,23 +115,34 @@ export function initSignup() {
     const submitBtn = form.querySelector('[type="submit"]');
     if (submitBtn) submitBtn.disabled = true;
 
-    try {
-      const res = await submitSignup({ name, email });
-      if (res.ok) {
-        showSuccess(name);
-      } else {
-        showError('Something went wrong. Please try again.');
-        if (submitBtn) submitBtn.disabled = false;
-      }
-    } catch {
-      showError('Something went wrong. Please try again.');
-      if (submitBtn) submitBtn.disabled = false;
+    const [lead, sheet] = await Promise.all([
+      submitLead({
+        firstName,
+        lastName,
+        email,
+        // Submitting is the opt-in (see the note under the button)
+        [MOMENCE.consentField]: 'Yes',
+        ...(honeypotEl?.value ? { _website: honeypotEl.value } : {}),
+        _t: Date.now() - mountedAt,
+      }),
+      submitToSheet({ name: `${firstName} ${lastName}`, email }),
+    ]);
+
+    // Either copy landing means we have them
+    if (lead.ok || sheet.ok) {
+      showSuccess(firstName);
+      return;
     }
+    showError(
+      lead.fieldErrors?.email
+        ? 'Please check your email address.'
+        : 'Something went wrong. Please try again.'
+    );
+    if (submitBtn) submitBtn.disabled = false;
   });
 
   /** Replace the form with a confirmation in the same label style. */
-  function showSuccess(fullName) {
-    const firstName = fullName.split(/\s+/)[0];
+  function showSuccess(firstName) {
     const done = document.createElement('div');
     done.className = 'signup-done';
     done.setAttribute('role', 'status');

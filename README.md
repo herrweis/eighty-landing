@@ -32,7 +32,7 @@ The 80° "sitting in place" is plain CSS `position: sticky`. There is no smooth-
 index.html              # markup for all three acts + footer (content lives here)
 src/
   main.js               # entry — wires up signup + motion
-  signup.js             # form validation, stubbed submit, success state
+  signup.js             # form validation, Momence lead submit, success state
   motion.js             # IntersectionObserver line-draw + reveals (no libraries)
   styles/
     _variables.scss     # tokens (Cedar, Linen, fonts, breakpoint)
@@ -53,6 +53,6 @@ public/
 
 ## Still stubbed (search `TODO`)
 
-- **Sign-up endpoint** — `submitSignup()` in `src/signup.js` is a stub; no provider is wired and no secrets are committed. Point it at a serverless proxy (Mailchimp/Klaviyo/etc).
+- **Sign-up endpoint**: `submitLead()` in `src/signup.js` posts straight to Momence's public lead endpoint (the one their lead-form plugin uses) with lead source "Foundation Members". The marketing opt-in is stored in the `marketingConsent` custom lead field, which has to exist in Momence. Each sign-up is also copied to the Google Sheet via `api/subscribe.js` (see `EMAIL_SETUP.md`) as a temporary backup.
 - **Social URLs** — Instagram/Facebook links point to `#`.
 - **Share image** — `public/og.png` is a generated placeholder; swap in the final 1200×630.

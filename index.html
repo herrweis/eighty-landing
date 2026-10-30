@@ -243,11 +243,17 @@
           <form class="stamp" novalidate data-form>
             <h2 class="stamp__row stamp__head" id="signup-heading">Keep me in the loop</h2>
             <div class="stamp__row stamp__row--field">
-              <label class="stamp__label" for="name">Name:</label>
+              <label class="stamp__label" for="first-name">First name:</label>
               <span class="stamp__field-wrap">
                 <!-- blinking caret stands in for the placeholder while empty -->
-                <input class="stamp__field" id="name" name="name" type="text" placeholder=" " autocomplete="name" />
+                <input class="stamp__field" id="first-name" name="firstName" type="text" placeholder=" " autocomplete="given-name" />
                 <span class="stamp__caret" aria-hidden="true"></span>
+              </span>
+            </div>
+            <div class="stamp__row stamp__row--field">
+              <label class="stamp__label" for="last-name">Last name:</label>
+              <span class="stamp__field-wrap">
+                <input class="stamp__field" id="last-name" name="lastName" type="text" placeholder="type here" autocomplete="family-name" />
               </span>
             </div>
             <div class="stamp__row stamp__row--field">
@@ -256,10 +262,16 @@
                 <input class="stamp__field" id="email" name="email" type="email" placeholder="type here" autocomplete="email" inputmode="email" />
               </span>
             </div>
+            <!-- honeypot: real people never see or fill this -->
+            <input class="stamp__trap" name="_website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <button class="stamp__row stamp__submit" type="submit">
               <span>Notify me</span>
               <span class="arrow" aria-hidden="true">→</span>
             </button>
+            <p class="stamp__note">
+              By clicking Notify me, you agree to receive emails from eighty° about our opening,
+              news and offers. Unsubscribe any time.
+            </p>
           </form>
 
           <p class="form-msg" data-form-error role="alert" hidden></p>
