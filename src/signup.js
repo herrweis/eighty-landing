@@ -9,9 +9,6 @@ const MOMENCE = {
   endpoint: 'https://api.momence.com/integrations/customer-leads/330703/collect',
   token: 'Z37WJQ4Lja',
   sourceId: 287786, // Lead source: "Foundation Members"
-  // Custom lead field (Settings → Custom lead fields, type Text) that records
-  // the marketing opt-in on each lead.
-  consentField: 'marketingConsent',
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -120,8 +117,9 @@ export function initSignup() {
         firstName,
         lastName,
         email,
-        // Submitting is the opt-in (see the note under the button)
-        [MOMENCE.consentField]: 'Yes',
+        // Submitting is the opt-in (see the note under the button). Same
+        // value Momence's own form sends when its consent box is ticked.
+        dataCollectConsent: 'on',
         ...(honeypotEl?.value ? { _website: honeypotEl.value } : {}),
         _t: Date.now() - mountedAt,
       }),

@@ -53,6 +53,6 @@ public/
 
 ## Still stubbed (search `TODO`)
 
-- **Sign-up endpoint**: `submitLead()` in `src/signup.js` posts straight to Momence's public lead endpoint (the one their lead-form plugin uses) with lead source "Foundation Members". The marketing opt-in is stored in the `marketingConsent` custom lead field, which has to exist in Momence. Each sign-up is also copied to the Google Sheet via `api/subscribe.js` (see `EMAIL_SETUP.md`) as a temporary backup.
+- **Sign-up endpoint**: `submitLead()` in `src/signup.js` posts straight to Momence's public lead endpoint (the one their lead-form plugin uses) with lead source "Foundation Members". Submitting is the opt-in (spelled out under the button) and is sent as Momence's built-in `dataCollectConsent`. Each sign-up is also copied to the Google Sheet via `api/subscribe.js` (see `EMAIL_SETUP.md`) as a temporary backup.
 - **Social URLs** — Instagram/Facebook links point to `#`.
 - **Share image** — `public/og.png` is a generated placeholder; swap in the final 1200×630.
